@@ -1,0 +1,208 @@
+<!-- Content Start -->
+<div id="main" class="{{class}}">
+<!-- Title, Breadcrumb Start-->
+<div class="breadcrumb-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+        <h2 class="title">{{{category}}}</h2>
+      </div>
+      <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+        <div class="breadcrumbs pull-right">
+          <ul>
+            <li>当前位置：</li>
+            <li><a href="/">首页</a></li>
+            <li>{{{category}}}</li>
+            <li>{{full_title}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Title, Breadcrumb End-->
+<!-- Main Content start-->
+<div class="content">
+<div class="container">
+<div class="row">
+<div class="posts-block col-lg-9 col-md-9 col-sm-8 col-xs-12 bottom-pad">
+  <article class="post hentry">
+    {{#thumbnail}}
+    <div class="post-image">
+      <a href="{{thumbnail}}" data-rel="prettyPhoto">
+        <span class="img-hover"></span>
+        <span class="fullscreen"><i class="fa fa-search"></i></span>
+        <img src="{{thumbnail}}" alt="">
+      </a>
+    </div>
+    {{/thumbnail}}
+    <header class="post-header">
+      <h3 class="content-title">{{full_title}}</h3>
+
+      <div class="blog-entry-meta">
+        <div class="blog-entry-meta-date">
+          <i class="fa fa-clock-o"></i>
+          <span class="blog-entry-meta-date">{{date}}</span>
+        </div>
+        <div class="blog-entry-meta-author">
+          <i class="fa fa-user"></i>
+          <a href="{{author_url}}" class="blog-entry-meta-author">{{author}}</a>
+        </div>
+        <div class="blog-entry-meta-tags">
+          <i class="fa fa-tags"></i>
+          {{{tags}}}
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      {{{content}}}
+    </div>
+  </article>
+  <div class="blog-divider"></div>
+  <ul class="pager">
+    <li class="previous"><a href="#">&larr; 上一篇</a></li>
+    <li class="next"><a href="#">下一篇 &rarr;</a></li>
+  </ul>
+  <!-- Start About Author -->
+  <div class="about-author">
+    <h3 class="title">关于作者</h3>
+
+    <div class="author-content">
+      <div class="avatar">{{{author_avatar}}}</div>
+      <div class="data">
+        <h4><a href="{{author_url}}">{{author}}</a></h4>
+        <p>{{author_description}}</p>
+      </div>
+      <!-- End data -->
+    </div>
+  </div>
+  <!-- End About Author -->
+  <div class="divider"></div>
+  <!-- Comments Section Start -->
+  <div class="comment-wrapper">
+    <h3 class="title">评论</h3>
+
+    <div class="clearfix"></div>
+    <!-- comments -->
+  </div>
+
+</div>
+<div class="sidebar col-lg-3 col-md-3 col-sm-4 col-xs-12">
+  <!-- Search Widget Start -->
+  <div class="widget search-form">
+    <form action="/">
+      <div class="input-group">
+        <input type="text" placeholder="搜索..." class="search-input form-control" name="s" />
+        <span class="input-group-btn">
+          <button class="btn subscribe-btn"><i class="fa fa-search"></i></button>
+        </span>
+      </div>
+    </form>
+    <!-- /input-group -->
+  </div>
+  <!-- Search Widget End -->
+  <!-- Ads Widget Start -->
+  <div class="widget ads">
+    <h3 class="title">热门活动</h3>
+
+    <div class="ads-img row">
+      {{#actives}}
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <a href="{{link}}" title="{{full_title}}">{{{thumbnail}}}</a>
+      </div>
+      {{/actives}}
+    </div>
+  </div>
+  <!-- Ads Widget End -->
+  <!-- Category Widget Start -->
+  <div class="widget category">
+    <h3 class="title">Categories</h3>
+    <ul class="category-list slide">
+      <li><a href="#">Web Design</a></li>
+      <li><a href="#">Graphic Design</a></li>
+      <li><a href="#">Illustration</a></li>
+      <li><a href="#">Logo Design</a></li>
+      <li><a href="#">Wordpress Themes</a></li>
+    </ul>
+  </div>
+  <!-- Category Widget End -->
+  <!-- Testimonials Widget Start -->
+  <div class="row">
+    <div class="testimonials widget">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="testimonials-title">
+          <h3 class="title">顾客评价</h3>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div id="testimonials-carousel" class="testimonials-carousel slide">
+        <div class="carousel-inner">
+          <div class="item active">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="testimonial item">
+                <p>
+                  兰派的球衣质量确实没有二话。引号和队标的时候沟通也很充分，制成的球衣我和队友们都很满意。
+                  如果今年能夺冠我们准备再来弄套冠军版的。
+                </p>
+
+                <div class="testimonials-arrow">
+                </div>
+                <div class="author">
+                  <div class="testimonial-image "><img alt="" src="../img/customer1.jpg"></div>
+                  <div class="testimonial-author-info">
+                    <a href="http://weibo.com/u/1667751057"><span class="color">全弘昊</span></a> 北京 无限点乐
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="testimonial item">
+                <p>
+                  这次集团比赛给部门做了一套，绝对秒杀其它公司的各种山寨货啊~~领导非常满意啊~~<br />
+                  下次有这机会还喊我来捧场哈~~
+                </p>
+
+                <div class="testimonials-arrow">
+                </div>
+                <div class="author">
+                  <div class="testimonial-image "><img alt="" src="../img/customer2.jpg"></div>
+                  <div class="testimonial-author-info">
+                    <a href="#"><span class="color">刘翌</span></a> ZOL 技术部
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="testimonial item">
+                <p>
+                  稍微上了点年纪的人还是比较挑剔的，伺候一帮老爷子打球不容易。
+                  经人推荐在兰派定了今年的球衣，真不错，大家都很满意。
+                </p>
+
+                <div class="testimonials-arrow">
+                </div>
+                <div class="author">
+                  <div class="testimonial-image "><img alt="" src="../img/customer3.jpg"></div>
+                  <div class="testimonial-author-info">
+                    <a href="#"><span class="color">雷霆辉</span></a> 北京化工大学
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Sidebar End -->
+</div>
+</div>
+</div>
+<!-- Main Content end-->
+</div>
+<!-- Content End -->

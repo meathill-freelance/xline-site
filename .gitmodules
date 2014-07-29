@@ -1,0 +1,3 @@
+[submodule "pure-html"]
+	path = pure-html
+	url = git@github.com:meathill-freelance/xline-site-html.git

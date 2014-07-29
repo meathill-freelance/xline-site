@@ -1,0 +1,95 @@
+/**************************************
+ * general
+ *************************************/
+.alert-sm {
+  padding: 9px 15px;
+}
+
+/**************************************
+ * diy
+ *************************************/
+.diy-container {
+  height: 800px;
+  width: 100%;
+}
+
+.style-list {
+  padding: 20px 0;
+}
+.style-list .tab-content {
+  margin: 20px 0;
+}
+.style-list label {
+  padding: 10px 10px 0;
+  cursor: pointer;
+}
+.style-list label div {
+  line-height: 2em;
+}
+.style-list label .preview-button {
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+  width: 2em;
+  height: 2em;
+  padding: 0;
+  margin: 0;
+  line-height: 2em;
+  text-align: center;
+  cursor: pointer;
+}
+.style-list label .preview-button:hover {
+  background-color: #666;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 3px;
+  color: #FFF;
+}
+.style-list label.active {
+  background-color: #5cb85c;
+  border: 1px solid #3e8f3e;
+  border-radius: 4px;
+}
+.style-list label.active div,
+.style-list label.active i {
+  color: #FFF;
+}
+.style-list label.active:after {
+  content: '\f00c';
+  font-family: 'FontAwesome';
+  font-size: 40px;
+  line-height: 100%;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  color: #3e8f3e;
+  text-shadow: 0 0 2px #FFF;
+}
+.style-list label.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.style-list label.disabled:after {
+  content: '\f05e';
+  font-family: 'FontAwesome';
+  font-size: 100px;
+  line-height: 100%;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  margin-left: -43px;
+}
+.style-list label.disabled .fa-ban {
+  display: block;
+}
+.style-list label img {
+  border-radius: 4px;
+}
+.style-list label input {
+  display: none;
+}
+.style-list label span {
+  line-height: 120px;
+  width: 100%;
+  display: block;
+  text-align: center;
+}

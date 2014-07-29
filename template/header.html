@@ -1,35 +1,127 @@
 <!DOCTYPE html>
-<!--[if IE 8]><html class="ie ie8"> <![endif]-->
-<!--[if IE 9]><html class="ie ie9"> <![endif]-->
 <html>
-<head>
-  <meta charset="utf-8">
+<head lang="cn">
+  <meta charset="UTF-8">
   <title>{{title}}</title>
 
   <meta name="description" content="XLine致力为中国热爱运动的朋友提供高质量的定制球衣。">
+  <meta name="keyword" content="xline,xline.com,球衣,定制,电子商务">
   <meta name="author" content="Meathill <meathill@gmail.com>">
   <!-- Mobile Metas -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Google Fonts -->
-  <link href='http://fonts.useso.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.useso.com/css?family=Oswald:400,300,700' rel='stylesheet' type='text/css'>
-  <!-- wp & woo headers -->
-  <!-- Library CSS -->
-  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.2.0/css/bootstrap.css">
-  <link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.css">
-  <!-- Theme CSS -->
-  <link rel="stylesheet" href="../css/woocommerce.css">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/line.css">
+  {{{theme_head}}}
+  <!-- Library -->
+  <link rel="stylesheet" href="//bootswatch.com/cyborg/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.staticfile.org/animate.css/3.1.0/animate.min.css">
+  <!-- Theme -->
+  <link rel="stylesheet" href="css/woocommerce.css">
+  <link rel="stylesheet" href="css/style.css">
   <!-- Favicons -->
-  <link rel="shortcut icon" type="image/png" href="../img/ico/favicon.png">
-  <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
-  <!--[if lt IE 9]>
-  <script src="//cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-  <script src="//cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-  <![endif]-->
-  <!--[if IE]>
-  <link rel="stylesheet" href="../css/ie.css">
-  <![endif]-->
+  <link rel="shortcut icon" type="image/png" href="img/ico/favicon.png">
+  <link rel="apple-touch-icon" href="img/ico/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="img/ico/apple-touch-icon-72.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="img/ico/apple-touch-icon-114.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="img/ico/apple-touch-icon-144.png">
 </head>
 <body class="{{body_class}}">
+<!-- main top bar -->
+<header id="top-bar">
+  <div class="container">
+    <h1 id="logo">
+      <img src="img/logo.png" width="240" height="19" alt="xline.com">
+      <small>专业队服定制</small>
+    </h1>
+    <ul class="pull-right social">
+      <li class="weibo button"><a href="http://weibo.com/meathill" class="fa fa-weibo" target="_blank"></a></li>
+      <li class="qq button"><a href="http://user.qzone.qq.com/11581454" class="fa fa-qq" target="_blank"></a></li>
+      <li class="vertical-spacer"></li>
+      <li class="phone button"><a href="javascript:void(0);"><i class="fa fa-phone"></i></a></li>
+      <li class="phone-number">
+        T: 400 0050 021<br> E: <a href="mailto:service@xline.com.cn">service@xline.com.cn</a>
+      </li>
+    </ul>
+  </div>
+</header>
+<!-- main top bar over -->
+<!-- main nav -->
+<nav id="main-nav" class="navbar" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">开关导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">首页</a></li>
+        <li><a href="/teams">XLINE球队</a></li>
+        <li><a href="/diy">定制球衣</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right me">
+        <li class="dropdown">
+          {{#is_login}}
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">个人中心 <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/profile">个人信息</a></li>
+            <li><a href="/my">我的衣柜</a></li>
+            <li><a href="/cart">购物车</a></li>
+            <li class="divider"></li>
+            <li><a href="/wp-login.php?action=logout&_wpnonce={{nonce}}&redirect_to=/">退出登录</a></li>
+          </ul>
+          {{/is_login}}
+          {{^is_login}}
+          <a href="#login-modal" data-toggle="modal">登录</a>
+          {{/is_login}}
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div>
+</nav>
+<!-- main nav over -->
+<!-- login modal -->
+<div class="modal fade" id="login-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+        <h4 class="modal-title">登录XLINE.COM</h4>
+      </div>
+      <div class="modal-body">
+        <form id="login-form" action="/wp-login.php" method="post" class="form-horizontal" role="form">
+          {{{login_nonce}}}
+          <input type="hidden" name="redirect_to" value="/">
+          <div class="form-group">
+            <label for="username" class="col-sm-3 control-label">用户名</label>
+            <div class="col-sm-9">
+              <input id="username" type="text" name="log" class="form-control" placeholder="您的邮箱，如you@xline.com.cn" tabindex="1">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password" class="col-sm-3 control-label">Password</label>
+            <div class="col-sm-9">
+              <input id="password" type="password" name="pwd" class="form-control" tabindex="2">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+              <label for="remember-me"><input name="rememberme" type="checkbox" id="remember-me" value="forever" tabindex="3"> 记住我的登录信息</label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" tabindex="4" form="login-form"><i class="fa fa-check"></i> 登录</button>
+        <a class="btn btn-info" href="{{lost_pwd_url}}" tabindex="5">忘记密码？</a>
+        <button type="button" class="btn btn-default" data-dismiss="modal" tabindex="6"><i class="fa fa-times"></i> 放弃</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+<!-- login modal over -->
