@@ -11,12 +11,6 @@
 class Spokesman {
   public static function say($args, $extra = null) {
     // 判断下是否需要给图片加绝对路径
-    if (isset($args['list']) && is_array($args['list'])) {
-      foreach ($args['list'] as $key => $item) {
-        $args['list'][$key] = self::checkImageUrl($item, $extra);
-      }
-    }
-    $args = self::checkImageUrl($args, $extra);
     header("Content-Type:application/json;charset=UTF-8");
     exit(json_encode($args));
   }

@@ -42,7 +42,7 @@ $('.style-list')
     $(this).hide();
     $('.diy-container').removeClass('hide');
     swfobject.embedSWF(
-      "/wp-content/themes/line/swf/DIY.swf",
+      "/wp-content/themes/xline/swf/DIY.swf",
       "diy-flash", "100%", "100%", "11.0.0",
       "../swf/expressInstall.swf",
       flashvars, params, attributes);
