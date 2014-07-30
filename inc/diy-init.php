@@ -12,7 +12,7 @@ require_once dirname(__FILE__) . "/Spokesman.class.php";
 // 检查是否登录
 function line_is_login() {
   $result = array(
-    'is_login' => true || is_user_logged_in(),
+    'is_login' => is_user_logged_in(),
     'code' => 0,
   );
   Spokesman::say($result);
@@ -30,7 +30,7 @@ function line_create_pic() {
   $uid = uniqid();
   $year = date('Y');
   $month = date('m');
-  $path = dirname(__FILE__) . "../../../../user/$year/$month/";
+  $path = dirname(__FILE__) . "/../../../design/$year/$month/";
   if (!is_dir($path)) {
     mkdir($path, 0777, true);
   }
@@ -38,7 +38,7 @@ function line_create_pic() {
 
   // 写入文件
   $fp = fopen($filename, 'w');
-  fwrite($fp, $HTTP_RAW_POST_DATA);
+  fwrite($fp, file_get_contents("php://input"));
   fclose($fp);
 
   // 插入记录
@@ -58,6 +58,7 @@ function line_create_pic() {
   Spokesman::judge($id, '保存成功', '保存失败', array(
     'id' => $id,
     'url' => esc_url(content_url('/')) . "user/$year/$month/{$userid}_{$uid}.jpg",
+    'file' => $filename,
   ));
   exit();
 }
@@ -71,7 +72,51 @@ function line_save() {
   $name = $_REQUEST['name'];
   $url = $_REQUEST['url'];
   $design = $_REQUEST['design'];
+  $id = (int)$_REQUEST['id'];
   $now = date('Y-m-d H:i:s');
+
+  if ($id) { // 修改
+    // 判断设计所有者
+    $sql = "SELECT `userid`
+            FROM `t_user_diy`
+            WHERE `id`=$id";
+    $author = $pdo->query($sql)->fetch(PDO::FETCH_COLUMN);
+    if ($author !== $userid) {
+      header('HTTP/1.1 401 Unauthorized');
+      exit(json_encode(array(
+        'code' => 2,
+        'msg' => '不能修改别人的作品哦'
+      )));
+    }
+
+    // 修改设计
+    $sql = "UPDATE `t_user_diy`
+            SET `update_time`=:now, `name`=:name, `thumbnail`=:url
+            WHERE `id`=$id";
+    $sth = $pdo->prepare($sql);
+    $result = $sth->execute(array(
+      ':now' => $now,
+      ':name' => $name,
+      ':url' => $url,
+    ));
+    // 修改设计记录
+    if (!$result) {
+      header('HTTP/1.1 400 Bad Request');
+      exit(json_encode(array(
+        'code' => 1,
+        'msg' => '修改失败'
+      )));
+    }
+    $sql = "UPDATE `t_diy_detail`
+            SET `json`=:json
+            WHERE `id`=$id";
+    $sth = $pdo->prepare($sql);
+    $result = $sth->execute(array(
+      ':json' => $design,
+    ));
+    Spokesman::judge($result, '修改成功', '修改失败');
+    exit();
+  }
 
   // 保存设计
   $sql = "INSERT INTO `t_user_diy`

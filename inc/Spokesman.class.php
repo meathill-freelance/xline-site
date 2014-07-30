@@ -17,9 +17,6 @@ class Spokesman {
 
   public static function judge($result, $success, $error, $args = null, $extra = null) {
     header("Content-Type:application/json;charset=UTF-8");
-    if ($args) {
-      $args = self::checkImageUrl($args, $extra);
-    }
     if ($result) {
       echo json_encode(array_merge(array(
         'code' => 0,
