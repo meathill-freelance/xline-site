@@ -11,36 +11,22 @@
 get_header();
 
 require_once(dirname(__FILE__) . '/inc/Spokesman.class.php');
+$pdo = require_once(dirname(__FILE__) . '/inc/pdo.php');
 
-// 最新活动
-$args = array(
-  'post_type' => 'page',
-  'post_parent' => get_option('woo_active_page'),
-);
-$actives = new WP_Query($args);
-$count = 0;
+// 最新作品
+$sql = "SELECT `id`, `userid`, `name`, `thumbnail`
+        FROM `t_user_diy`
+        WHERE `status`=0
+        ORDER BY `id` DESC
+        LIMIT 9";
+$designs = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+
 $result = array(
-  'actives' => array(),
-  'content_url' => esc_url(content_url('/')),
+  'theme_url' => get_template_directory_uri(),
+  'items0' => array_slice($designs, 0, 5),
+  'items1' => array_slice($designs, 5, 3),
+  'items2' => array_slice($designs, 7, 1),
 );
-while ($actives->have_posts()) {
-  $actives->the_post();
-  $content = apply_filters('the_content', $content);
-  $result['actives'][] = array(
-    'thumbnail' => get_the_post_thumbnail(null, 'homepage-active'),
-    'title' => the_title('', '', FALSE),
-    'full_title' => the_title_attribute(array('echo' => FALSE)),
-    'link' => apply_filters('the_permalink', get_permalink()),
-    'date' => apply_filters('the_time', get_the_time('Y-m-d'), 'Y年m月d日'),
-    'excerpt' => apply_filters('the_excerpt', get_the_excerpt()),
-  );
-  $count++;
-  if ($count >= 3) {
-    break;
-  }
-}
-
-// 最新产品
 
 $template = dirname(__FILE__) . '/template/index.html';
 Spokesman::toHTML($result, $template);

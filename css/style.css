@@ -70,7 +70,12 @@ h1, h2, h3 {
   font-family: "Open Sans", "trebuchet ms", arial, Microsoft Yahei, Simhei;
 }
 
-/* line 20, style.sass */
+/* line 1, _reset-bs.sass */
+.alert.fa {
+  display: block;
+}
+
+/* line 22, style.sass */
 #top-bar {
   height: 65px;
   padding: 15px 0;
@@ -78,32 +83,32 @@ h1, h2, h3 {
   background-image: -webkit-linear-gradient(#161616, #090909 80%, #212121);
   background-image: linear-gradient(#161616, #090909 80%, #212121);
 }
-/* line 26, style.sass */
+/* line 28, style.sass */
 #top-bar h1 {
   margin: 0;
   width: 50%;
   font-size: 12px;
   float: left;
 }
-/* line 32, style.sass */
+/* line 34, style.sass */
 #top-bar h1 img {
   vertical-align: bottom;
   margin-right: 5px;
 }
-/* line 36, style.sass */
+/* line 38, style.sass */
 #top-bar h1 small {
   font-size: 10px;
   letter-spacing: 0.25em;
 }
-/* line 43, style.sass */
+/* line 45, style.sass */
 #top-bar .social li {
   float: left;
 }
-/* line 46, style.sass */
+/* line 48, style.sass */
 #top-bar .social li + li {
   margin-left: 10px;
 }
-/* line 49, style.sass */
+/* line 51, style.sass */
 #top-bar .social .button {
   width: 26px;
   height: 26px;
@@ -114,27 +119,27 @@ h1, h2, h3 {
   border-radius: 50%;
   vertical-align: middle;
 }
-/* line 59, style.sass */
+/* line 61, style.sass */
 #top-bar .social .button:hover {
   background-color: white;
   color: #111111;
 }
-/* line 63, style.sass */
+/* line 65, style.sass */
 #top-bar .social .button .fa {
   font-size: 14px;
   line-height: 24px;
 }
-/* line 68, style.sass */
+/* line 70, style.sass */
 #top-bar .social .vertical-spacer {
   height: 30px;
   border: 1px solid #444444;
 }
-/* line 72, style.sass */
+/* line 74, style.sass */
 #top-bar .social .phone-number {
   font: 10px/15px Arial;
 }
 
-/* line 75, style.sass */
+/* line 77, style.sass */
 #main-nav {
   font-size: 14px;
   height: 45px;
@@ -145,39 +150,43 @@ h1, h2, h3 {
   border-radius: 0;
   margin-bottom: 0;
 }
-/* line 84, style.sass */
+/* line 86, style.sass */
 #main-nav .nav li {
   min-width: 90px;
   text-align: center;
 }
-/* line 88, style.sass */
+/* line 90, style.sass */
 #main-nav .nav li a:hover {
   background-image: -moz-linear-gradient(#1b1b1b, #282828 65%, #353535);
   background-image: -webkit-linear-gradient(#1b1b1b, #282828 65%, #353535);
   background-image: linear-gradient(#1b1b1b, #282828 65%, #353535);
 }
-/* line 91, style.sass */
+/* line 93, style.sass */
 #main-nav .active {
   background-image: -moz-linear-gradient(#1b1b1b, #282828 65%, #353535);
   background-image: -webkit-linear-gradient(#1b1b1b, #282828 65%, #353535);
   background-image: linear-gradient(#1b1b1b, #282828 65%, #353535);
 }
-/* line 94, style.sass */
+/* line 96, style.sass */
 #main-nav .me {
   width: 160px;
   background-color: #bd093b;
 }
-/* line 98, style.sass */
+/* line 100, style.sass */
 #main-nav .me > li {
   width: 100%;
 }
-/* line 101, style.sass */
+/* line 103, style.sass */
 #main-nav .me .open > a {
   background-color: #8c072c;
 }
-/* line 106, style.sass */
+/* line 108, style.sass */
 #main-nav .dropdown-menu li {
   text-align: left;
+}
+/* line 111, style.sass */
+#main-nav .dropdown-menu .fa {
+  margin-right: 5px;
 }
 
 /* line 3, components/_main-slide.sass */
@@ -291,15 +300,16 @@ h1, h2, h3 {
 }
 /* line 38, components/_showcase.sass */
 #showcase header select {
+  border-color: #cccccc;
   border-radius: 0 4px 4px 0;
   margin-right: 15px;
 }
-/* line 43, components/_showcase.sass */
+/* line 44, components/_showcase.sass */
 #showcase .product-list ul {
   overflow: hidden;
   color: #111111;
 }
-/* line 48, components/_showcase.sass */
+/* line 49, components/_showcase.sass */
 #showcase .product-list li {
   background-color: white;
   width: 25%;
@@ -308,11 +318,11 @@ h1, h2, h3 {
   overflow: hidden;
   position: relative;
 }
-/* line 56, components/_showcase.sass */
+/* line 57, components/_showcase.sass */
 #showcase .product-list .category {
   padding: 90px 20px 0;
 }
-/* line 59, components/_showcase.sass */
+/* line 60, components/_showcase.sass */
 #showcase .product-list .category .more {
   position: absolute;
   top: 20px;
@@ -324,30 +334,35 @@ h1, h2, h3 {
   text-align: center;
   font-style: italic;
 }
-/* line 70, components/_showcase.sass */
+/* line 71, components/_showcase.sass */
 #showcase .product-list .category .more:hover {
   background-color: #ff1103;
 }
-/* line 73, components/_showcase.sass */
+/* line 74, components/_showcase.sass */
 #showcase .product-list .category h2 {
+  color: #111111;
   font: bold 26px/50px Helvatica, Microsoft Yahei;
   margin: 0;
 }
-/* line 77, components/_showcase.sass */
+/* line 79, components/_showcase.sass */
 #showcase .product-list .category h2 em {
   font-size: 30px;
   color: #ff4136;
 }
-/* line 81, components/_showcase.sass */
+/* line 83, components/_showcase.sass */
 #showcase .product-list .category p {
   font-size: 12px;
   color: #aaaaaa;
 }
-/* line 88, components/_showcase.sass */
+/* line 90, components/_showcase.sass */
 #showcase .product-list .item .detail {
-  padding-top: 50px;
   background-color: rgba(255, 255, 255, 0.8);
+  padding-top: 50px;
   text-align: center;
+}
+/* line 95, components/_showcase.sass */
+#showcase .product-list .item .detail h3 {
+  color: #111111;
 }
 
 /* line 18, _define.sass */

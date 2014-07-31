@@ -55,7 +55,7 @@ class Spokesman {
     $mustache = new Mustache_Engine(array('cache' => '/var/tmp'));
     $html = file_get_contents($tpl);
 
-    $html = preg_replace('/(href|src)="(\w+\/)/', "$1=\"{{content_url}}themes/xline/$2", $html);
+    $html = preg_replace('/(href|src)="(\w+\/)/', "$1=\"{{theme_url}}/$2", $html);
     $html = $mustache->render($html, $data);
     echo $html;
   }

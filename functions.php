@@ -9,6 +9,8 @@
  */
 
 $includes = array(
+  'inc/general.php',
+  'inc/diy-static.php',
   'inc/theme-init.php',
   'inc/diy-init.php',
 );

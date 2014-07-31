@@ -11,26 +11,8 @@
 require_once(dirname(__FILE__) . '/inc/Spokesman.class.php');
 
 $result = array(
-  'content_url' => esc_url(content_url('/')),
+  'theme_url' => get_template_directory_uri(),
 );
-// 公司新闻
-if (have_posts()) {
-  $blog = array();
-  $count = 0;
-  while (have_posts()) {
-    the_post();
-    $blog[] = array(
-      'title' => the_title_attribute(array('echo' => FALSE)),
-      'link' => apply_filters('the_permalink', get_permalink()),
-      'date' => apply_filters('the_time', get_the_time('Y-m-d'), 'Y-m-d'),
-    );
-    $count ++;
-    if ($count >= 2) {
-      break;
-    }
-  }
-  $result['blog'] = $blog;
-}
 // 主题和插件内容
 ob_start();
 wp_footer();

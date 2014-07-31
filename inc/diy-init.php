@@ -9,17 +9,6 @@
 */
 require_once dirname(__FILE__) . "/Spokesman.class.php";
 
-// 检查是否登录
-function line_is_login() {
-  $result = array(
-    'is_login' => is_user_logged_in(),
-    'code' => 0,
-  );
-  Spokesman::say($result);
-}
-add_action('wp_ajax_nopriv_line_is_login', "line_is_login");
-add_action('wp_ajax_line_is_login', "line_is_login");
-
 function line_create_pic() {
   $pdo = require_once dirname(__FILE__) . "/pdo.php";
   $userid = get_current_user_id();
@@ -50,14 +39,14 @@ function line_create_pic() {
     ':userid' => $userid,
     ':now' => $now,
     ':type' => $type,
-    ':url' => esc_url(content_url('/')) . "user/$year/$month/{$userid}_{$uid}.jpg",
+    ':url' => esc_url(content_url('/')) . "design/$year/$month/{$userid}_{$uid}.jpg",
     ':size' => 0,
   ));
   $id = $pdo->lastInsertId();
 
   Spokesman::judge($id, '保存成功', '保存失败', array(
     'id' => $id,
-    'url' => esc_url(content_url('/')) . "user/$year/$month/{$userid}_{$uid}.jpg",
+    'url' => esc_url(content_url('/')) . "design/$year/$month/{$userid}_{$uid}.jpg",
     'file' => $filename,
   ));
   exit();

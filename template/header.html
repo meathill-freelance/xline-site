@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {{{theme_head}}}
   <!-- Library -->
-  <link rel="stylesheet" href="//bootswatch.com/cyborg/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="//cdn.staticfile.org/animate.css/3.1.0/animate.min.css">
   <!-- Theme -->
@@ -65,26 +65,27 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right me">
-        <li class="dropdown">
-          {{#is_login}}
+        {{^is_login}}
+        <li class="login">
+          <a href="#login-modal" data-toggle="modal">登录</a>
+        </li>
+        {{/is_login}}
+        <li class="dropdown profile {{^is_login}}hide{{/is_login}}">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">个人中心 <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/profile">个人信息</a></li>
-            <li><a href="/my">我的衣柜</a></li>
-            <li><a href="/cart">购物车</a></li>
+            <li><a href="/profile"><i class="fa fa-fw fa-user"></i> 个人信息</a></li>
+            <li><a href="/my"><i class="fa fa-fw fa-archive"></i> 我的衣柜</a></li>
+            <li><a href="/cart"><i class="fa fa-fw fa-shopping-cart"></i> 购物车</a></li>
             <li class="divider"></li>
-            <li><a href="/wp-login.php?action=logout&_wpnonce={{nonce}}&redirect_to=/">退出登录</a></li>
+            <li><a href="/wp-login.php?action=logout&_wpnonce={{nonce}}&redirect_to=/"><i class="fa fa-fw fa-sign-out"></i> 退出登录</a></li>
           </ul>
-          {{/is_login}}
-          {{^is_login}}
-          <a href="#login-modal" data-toggle="modal">登录</a>
-          {{/is_login}}
         </li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div>
 </nav>
 <!-- main nav over -->
+{{^is_login}}
 <!-- login modal -->
 <div class="modal fade" id="login-modal">
   <div class="modal-dialog">
@@ -94,9 +95,10 @@
         <h4 class="modal-title">登录XLINE.COM</h4>
       </div>
       <div class="modal-body">
-        <form id="login-form" action="/wp-login.php" method="post" class="form-horizontal" role="form">
+        <form id="login-form" action="/wp-admin/admin-ajax.php" method="post" class="form-horizontal" role="form">
           {{{login_nonce}}}
           <input type="hidden" name="redirect_to" value="/">
+          <div class="alert" style="display: none"></div>
           <div class="form-group">
             <label for="username" class="col-sm-3 control-label">用户名</label>
             <div class="col-sm-9">
@@ -125,3 +127,4 @@
   </div><!-- /.modal-dialog -->
 </div>
 <!-- login modal over -->
+{{/is_login}}

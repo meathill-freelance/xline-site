@@ -55,31 +55,43 @@
         <h2>衣裤 <em>/</em> 篮球</h2>
         <p>敏捷在国内传播传播阶段，我因为不再从事具体研发工作，一直没有花精力去详细了解它。</p>
       </li>
-      <li class="football item">
-        <img src="img/tmp.jpg" width="100%">
+      {{#items0}}
+      <li class="{{alias}} item">
+        <img src="{{thumbnail}}" width="100%">
         <div class="detail">
-          <h3>XLINE球队</h3>
-          <p>所在地：北京</p>
+          <h3>{{name}}</h3>
+          <p>所在地：{{province}}</p>
         </div>
       </li>
-      <li class="football item"></li>
-      <li class="basketball item"></li>
-      <li class="basketball item"></li>
-      <li class="basketball item"></li>
+      {{/items0}}
       <li class="category">
         <a href="/teams/basketball" class="more">more &gt;&gt;</a>
         <h2>衣裤 <em>/</em> 足球</h2>
         <p>敏捷在国内传播传播阶段，我因为不再从事具体研发工作，一直没有花精力去详细了解它。</p>
       </li>
-      <li class="basketball item"></li>
-      <li class="football item"></li>
-      <li class="football item"></li>
-      <li class="football item"></li>
+      {{#items1}}
+      <li class="{{alias}} item">
+        <img src="{{thumbnail}}" width="100%">
+        <div class="detail">
+          <h3>{{name}}</h3>
+          <p>所在地：{{province}}</p>
+        </div>
+      </li>
+      {{/items1}}
       <li class="category">
         <a href="/teams/basketball" class="more">more &gt;&gt;</a>
         <h2>衣裤 <em>/</em> 高尔夫</h2>
         <p>敏捷在国内传播传播阶段，我因为不再从事具体研发工作，一直没有花精力去详细了解它。</p>
       </li>
+      {{#items2}}
+      <li class="{{alias}} item">
+        <img src="{{thumbnail}}" width="100%">
+        <div class="detail">
+          <h3>{{name}}</h3>
+          <p>所在地：{{province}}</p>
+        </div>
+      </li>
+      {{/items2}}
     </ul>
   </div>
 

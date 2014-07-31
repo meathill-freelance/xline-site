@@ -29,7 +29,7 @@ if (have_posts()) {the_post();
     'author_url' => get_author_posts_url(get_the_author_meta('ID')),
     'author_avatar' => get_avatar(get_the_author_meta('email'), '70'),
     'author_description' => get_the_author_meta('description'),
-    'content_url' => esc_url(content_url('/')),
+    'theme_url' => get_template_directory_uri(),
   );
 }
 
