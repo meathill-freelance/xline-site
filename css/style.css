@@ -205,7 +205,7 @@ h1, h2, h3 {
 }
 /* line 14, components/_main-slide.sass */
 #main-slide .item.logo {
-  background: url(../img/slide2.png) no-repeat center center;
+  background: url(../pure-html/img/slide2.png) no-repeat center center;
 }
 
 /* line 18, _define.sass */
@@ -359,10 +359,15 @@ h1, h2, h3 {
   background-color: rgba(255, 255, 255, 0.8);
   padding-top: 50px;
   text-align: center;
+  color: #111111;
 }
-/* line 95, components/_showcase.sass */
+/* line 96, components/_showcase.sass */
 #showcase .product-list .item .detail h3 {
   color: #111111;
+}
+/* line 99, components/_showcase.sass */
+#showcase .product-list .item .detail:hover {
+  text-decoration: none;
 }
 
 /* line 18, _define.sass */
@@ -426,7 +431,7 @@ h1, h2, h3 {
 #about-us li {
   width: 33%;
   min-height: 224px;
-  background: url(../img/about1.jpg) no-repeat center center;
+  background: url(../pure-html/img/about1.jpg) no-repeat center center;
   background-size: cover;
   position: relative;
 }
@@ -436,11 +441,11 @@ h1, h2, h3 {
 }
 /* line 22, components/_about-us.sass */
 #about-us li.high-quality {
-  background-image: url(../img/about2.jpg);
+  background-image: url(../pure-html/img/about2.jpg);
 }
 /* line 25, components/_about-us.sass */
 #about-us li.startup {
-  background-image: url(../img/about3.jpg);
+  background-image: url(../pure-html/img/about3.jpg);
 }
 /* line 28, components/_about-us.sass */
 #about-us li h3 {
