@@ -1,10 +1,10 @@
 /* line 18, _define.sass */
-.ul, #top-bar .social, #showcase .product-list ul, #about-us ul, #footer .links {
+.ul, #top-bar .social, #showcase .product-list ul, #about-us ul, #footer .links, .list {
   margin: 0;
   padding: 0;
 }
 /* line 22, _define.sass */
-.ul li, #top-bar .social li, #showcase .product-list ul li, #about-us ul li, #footer .links li {
+.ul li, #top-bar .social li, #showcase .product-list ul li, #about-us ul li, #footer .links li, .list li {
   list-style: none;
 }
 
@@ -71,6 +71,11 @@ h1, h2, h3 {
 }
 
 /* line 1, _reset-bs.sass */
+.navbar-brand {
+  font-family: Arial, "Microsoft YaHei";
+}
+
+/* line 4, _reset-bs.sass */
 .alert.fa {
   display: block;
 }
@@ -209,12 +214,12 @@ h1, h2, h3 {
 }
 
 /* line 18, _define.sass */
-.ul, #top-bar .social, #showcase .product-list ul, #about-us ul, #footer .links {
+.ul, #top-bar .social, #showcase .product-list ul, #about-us ul, #footer .links, .list {
   margin: 0;
   padding: 0;
 }
 /* line 22, _define.sass */
-.ul li, #top-bar .social li, #showcase .product-list ul li, #about-us ul li, #footer .links li {
+.ul li, #top-bar .social li, #showcase .product-list ul li, #about-us ul li, #footer .links li, .list li {
   list-style: none;
 }
 
@@ -371,12 +376,12 @@ h1, h2, h3 {
 }
 
 /* line 18, _define.sass */
-.ul, #top-bar .social, #showcase .product-list ul, #about-us ul, #footer .links {
+.ul, #top-bar .social, #showcase .product-list ul, #about-us ul, #footer .links, .list {
   margin: 0;
   padding: 0;
 }
 /* line 22, _define.sass */
-.ul li, #top-bar .social li, #showcase .product-list ul li, #about-us ul li, #footer .links li {
+.ul li, #top-bar .social li, #showcase .product-list ul li, #about-us ul li, #footer .links li, .list li {
   list-style: none;
 }
 
@@ -513,12 +518,12 @@ h1, h2, h3 {
 }
 
 /* line 18, _define.sass */
-.ul, #top-bar .social, #showcase .product-list ul, #about-us ul, #footer .links {
+.ul, #top-bar .social, #showcase .product-list ul, #about-us ul, #footer .links, .list {
   margin: 0;
   padding: 0;
 }
 /* line 22, _define.sass */
-.ul li, #top-bar .social li, #showcase .product-list ul li, #about-us ul li, #footer .links li {
+.ul li, #top-bar .social li, #showcase .product-list ul li, #about-us ul li, #footer .links li, .list li {
   list-style: none;
 }
 
@@ -603,12 +608,12 @@ h1, h2, h3 {
 }
 
 /* line 18, _define.sass */
-.ul, #top-bar .social, #showcase .product-list ul, #about-us ul, #footer .links {
+.ul, #top-bar .social, #showcase .product-list ul, #about-us ul, #footer .links, .list {
   margin: 0;
   padding: 0;
 }
 /* line 22, _define.sass */
-.ul li, #top-bar .social li, #showcase .product-list ul li, #about-us ul li, #footer .links li {
+.ul li, #top-bar .social li, #showcase .product-list ul li, #about-us ul li, #footer .links li, .list li {
   list-style: none;
 }
 
@@ -677,13 +682,24 @@ h1, h2, h3 {
   vertical-align: middle;
 }
 
+/* line 4, components/_list.sass */
+.list img {
+  width: 100%;
+  display: block;
+}
+/* line 8, components/_list.sass */
+.list h3 {
+  text-align: center;
+  font-size: 16px;
+}
+
 /* line 18, _define.sass */
-.ul, #top-bar .social, #showcase .product-list ul, #about-us ul, #footer .links {
+.ul, #top-bar .social, #showcase .product-list ul, #about-us ul, #footer .links, .list {
   margin: 0;
   padding: 0;
 }
 /* line 22, _define.sass */
-.ul li, #top-bar .social li, #showcase .product-list ul li, #about-us ul li, #footer .links li {
+.ul li, #top-bar .social li, #showcase .product-list ul li, #about-us ul li, #footer .links li, .list li {
   list-style: none;
 }
 
@@ -732,12 +748,66 @@ h1, h2, h3 {
 
 /* line 5, _pages.sass */
 .breadcrumb {
-  background-color: transparent;
-  margin: 20px;
+  margin: 20px 0;
+  border: 1px solid #333333;
 }
 /* line 10, _pages.sass */
 .breadcrumb .active {
   color: #cccccc;
+}
+/* line 13, _pages.sass */
+.breadcrumb li + li:before {
+  color: #999999;
+}
+
+/*************************************
+ * design
+ ************************************ */
+/* line 20, _pages.sass */
+#design .head-pic {
+  width: 100%;
+}
+/* line 23, _pages.sass */
+#design .share-title {
+  border-top: 1px solid #111111;
+  font-size: 14px;
+  padding-top: 20px;
+}
+/* line 28, _pages.sass */
+#design .share-button-group {
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  filter: grayscale(100%);
+  filter: gray;
+}
+
+/* line 35, _pages.sass */
+.more {
+  border-top: 2px solid #333333;
+  margin-top: 40px;
+}
+/* line 39, _pages.sass */
+.more h2 {
+  font-size: 20px;
+  text-align: center;
+}
+
+/*************************************
+ * design
+ ************************************ */
+/* line 49, _pages.sass */
+.options .btn {
+  min-width: 100px;
+}
+/* line 52, _pages.sass */
+.options .btn + .btn {
+  margin-left: 10px;
+}
+
+/* line 55, _pages.sass */
+#teams {
+  padding-top: 20px;
 }
 
 @media (max-width: 1300px) {

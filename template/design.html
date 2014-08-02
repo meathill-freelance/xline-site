@@ -8,10 +8,34 @@
 </div>
 <!-- Breadcrumb End-->
 <!-- Content start-->
-<div class="container content">
+<div class="container content" id="design">
   <div class="row">
-    <div class="col-md-7 col-sm-12 pics"></div>
-    <div class="col-"
+    <div class="col-md-6 col-sm-12 pics">
+      <img src="{{thumbnail}}" class="img-thumbnail head-pic">
+    </div>
+    <div class="col-md-6 col-sm-12 detail">
+      <h1>{{name}}</h1>
+      <p>{{author}} 设计</p>
+      <h3 class="share-title">分享给好友</h3>
+      <div class="share-button-group">
+        <a class="btn btn-default"><i class="fa fa-qq"></i></a>
+        <a class="btn btn-default"><i class="fa fa-weibo"></i></a>
+        <a class="btn btn-default"><i class="fa fa-tencent-weibo"></i></a>
+        <a class="btn btn-default"><i class="fa fa-weixin"></i></a>
+        <a class="btn btn-default"><i class="fa fa-renren"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="more">
+    <h2>其它设计</h2>
+    <ul class="row list">
+      {{#other}}
+      <li class="col-md-3 col-sm-6 col-xs-12">
+        <a href="/detail/{{id}}"><img src="{{thumbnail}}" class="img-thumbnail"></a>
+        <h3><a href="/detail/{{id}}">{{name}}</a></h3>
+      </li>
+      {{/other}}
+    </ul>
   </div>
 </div>
 <!-- Content End -->
