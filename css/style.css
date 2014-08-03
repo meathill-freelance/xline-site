@@ -71,13 +71,32 @@ h1, h2, h3 {
 }
 
 /* line 1, _reset-bs.sass */
+h1, .h1 {
+  font-size: 24px;
+}
+
+/* line 4, _reset-bs.sass */
+h2, .h2 {
+  font-size: 20px;
+}
+
+/* line 7, _reset-bs.sass */
+h3, .h3 {
+  font-size: 16px;
+}
+
+/* line 10, _reset-bs.sass */
 .navbar-brand {
   font-family: Arial, "Microsoft YaHei";
 }
 
-/* line 4, _reset-bs.sass */
+/* line 15, _reset-bs.sass */
 .alert.fa {
   display: block;
+}
+/* line 18, _reset-bs.sass */
+.alert a.btn {
+  text-decoration: none;
 }
 
 /* line 22, style.sass */
@@ -210,7 +229,7 @@ h1, h2, h3 {
 }
 /* line 14, components/_main-slide.sass */
 #main-slide .item.logo {
-  background: url(../pure-html/img/slide2.png) no-repeat center center;
+  background: url(../img/slide2.png) no-repeat center center;
 }
 
 /* line 18, _define.sass */
@@ -436,7 +455,7 @@ h1, h2, h3 {
 #about-us li {
   width: 33%;
   min-height: 224px;
-  background: url(../pure-html/img/about1.jpg) no-repeat center center;
+  background: url(../img/about1.jpg) no-repeat center center;
   background-size: cover;
   position: relative;
 }
@@ -446,11 +465,11 @@ h1, h2, h3 {
 }
 /* line 22, components/_about-us.sass */
 #about-us li.high-quality {
-  background-image: url(../pure-html/img/about2.jpg);
+  background-image: url(../img/about2.jpg);
 }
 /* line 25, components/_about-us.sass */
 #about-us li.startup {
-  background-image: url(../pure-html/img/about3.jpg);
+  background-image: url(../img/about3.jpg);
 }
 /* line 28, components/_about-us.sass */
 #about-us li h3 {

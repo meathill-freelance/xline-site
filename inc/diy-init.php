@@ -61,6 +61,7 @@ function line_save() {
   $name = $_REQUEST['name'];
   $url = $_REQUEST['url'];
   $design = $_REQUEST['design'];
+  $json = json_decode($design);
   $id = (int)$_REQUEST['id'];
   $now = date('Y-m-d H:i:s');
 
@@ -109,14 +110,16 @@ function line_save() {
 
   // 保存设计
   $sql = "INSERT INTO `t_user_diy`
-          (`userid`, `create_time`, `update_time`, `name`, `thumbnail`)
-          VALUES (:userid, :now, :now, :name, :url)";
+          (`userid`, `create_time`, `update_time`, `name`, `thumbnail`, `top`, `pants`)
+          VALUES (:userid, :now, :now, :name, :url, :top, :pants)";
   $sth = $pdo->prepare($sql);
   $sth->execute(array(
     ':userid' => $userid,
     ':now' => $now,
     ':name' => $name,
     ':url' => $url,
+    ':top' => $json['top'],
+    ':pants' => $json['pants'],
   ));
   $id = $pdo->lastInsertId();
 

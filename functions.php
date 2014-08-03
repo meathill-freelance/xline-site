@@ -10,7 +10,6 @@
 
 $includes = array(
   'inc/general.php',
-  'inc/diy-static.php',
   'inc/theme-init.php',
   'inc/diy-init.php',
 );
@@ -20,3 +19,27 @@ foreach ($includes as $item) {
 
 // 下面是一些不好归类的函数
 add_theme_support( 'woocommerce' );
+
+function init_page($page, $pagesize, $total) {
+  $prev = $page - 1 > 0 ? $page - 1 : 0;
+  $max = ceil($total / $pagesize);
+  $next = $page + 1 < $max - 1 ? $page + 1 : ($max - 1);
+  $from = 0 < $page - 5 ? $page - 5 : 0;
+  $to = $page + 10 - ($page - $from) < $max - 1 ? $page + 10 - ($page - $from) : ($max - 1);
+  $pages = array();
+  for (; $from <= $to; $from++) {
+    $pages[] = array(
+      'to' => $from,
+      'page' => $from + 1,
+      'active' => $from === $page ? 'active' : '',
+    );
+  }
+
+  return array(
+    'prev' => $prev,
+    'no-prev' => $prev == $page ? 'disabled' : '',
+    'next' => $next,
+    'no-next' => $next == $page ? 'disabled' : '',
+    'pages' => $pages,
+  );
+}

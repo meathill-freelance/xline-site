@@ -54,12 +54,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a href="/" class="navbar-brand">首页</a>
+      <a href="/" class="navbar-brand">XLINE.COM</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
+        <li><a href="/">首页</a></li>
         <li><a href="/teams">XLINE球队</a></li>
         <li><a href="/diy">定制球衣</a>
         </li>
@@ -73,7 +74,7 @@
         <li class="dropdown profile {{^is_login}}hide{{/is_login}}">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">个人中心 <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/profile"><i class="fa fa-fw fa-user"></i> 个人信息</a></li>
+            <li><a href="/my-account"><i class="fa fa-fw fa-user"></i> 我的账户</a></li>
             <li><a href="/my"><i class="fa fa-fw fa-archive"></i> 我的衣柜</a></li>
             <li><a href="/cart"><i class="fa fa-fw fa-shopping-cart"></i> 购物车</a></li>
             <li class="divider"></li>
@@ -106,7 +107,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="password" class="col-sm-3 control-label">Password</label>
+            <label for="password" class="col-sm-3 control-label">密码</label>
             <div class="col-sm-9">
               <input id="password" type="password" name="pwd" class="form-control" tabindex="2">
             </div>
@@ -121,7 +122,7 @@
       <div class="modal-footer">
         <button class="btn btn-primary" tabindex="4" form="login-form"><i class="fa fa-check"></i> 登录</button>
         <a class="btn btn-info" href="{{lost_pwd_url}}" tabindex="5">忘记密码？</a>
-        <button type="button" class="btn btn-default" data-dismiss="modal" tabindex="6"><i class="fa fa-times"></i> 放弃</button>
+        <a href="/wp-login.php?action=register" class="btn btn-success" tabindex="6" target="_blank"><i class="fa fa-edit"></i> 注册</a>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
