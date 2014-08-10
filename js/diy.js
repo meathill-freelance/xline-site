@@ -51,6 +51,8 @@ $('.style-list')
     return false;
   });
 
+// 回到选择款式的画面
+// 由flash调用
 function backToForm() {
   setTimeout(function () {
     if (confirm('重新选择款式之后，您需要从头进行设计，确定么？')) {
@@ -62,4 +64,18 @@ function backToForm() {
     }
   }, 10);
 
+}
+// 显示登录窗体
+// 由flash调用
+function showLoginModal() {
+  $('#login-modal').modal('show')
+    .find('.alert')
+    .addClass('alert-warning')
+    .text('请先登录');
+}
+
+function gotoCart() {
+  var form = $('<form action="/cart" class="hide" method="post"></form>');
+  form.appendTo('body');
+  form.submit();
 }

@@ -61,11 +61,17 @@ function line_save() {
   $name = $_REQUEST['name'];
   $url = $_REQUEST['url'];
   $design = $_REQUEST['design'];
-  $json = json_decode($design);
+  $json = json_decode(stripslashes($design), true);
   $id = (int)$_REQUEST['id'];
   $now = date('Y-m-d H:i:s');
 
-  if ($id) { // 修改
+  // 设计细节
+  $cloth1 = $json[0]['tid'];
+  $data1 = $json[0];
+  $data2 = count($json) > 1 ? $json[1] : '';
+  $cloth2 = $data2 ? $data2['tid'] : '';
+
+  if ($id > 0) { // 修改
     // 判断设计所有者
     $sql = "SELECT `userid`
             FROM `t_user_diy`
@@ -98,11 +104,14 @@ function line_save() {
       )));
     }
     $sql = "UPDATE `t_diy_detail`
-            SET `json`=:json
+            SET `cloth1`=:cloth1, `cloth2`=:cloth2, `data1`=:data1, `data2`=:data2
             WHERE `id`=$id";
     $sth = $pdo->prepare($sql);
     $result = $sth->execute(array(
-      ':json' => $design,
+      ':cloth1' => $cloth1,
+      ':cloth2' => $cloth2,
+      ':data1' => $data1,
+      ':data2' => $data2,
     ));
     Spokesman::judge($result, '修改成功', '修改失败');
     exit();
@@ -110,28 +119,37 @@ function line_save() {
 
   // 保存设计
   $sql = "INSERT INTO `t_user_diy`
-          (`userid`, `create_time`, `update_time`, `name`, `thumbnail`, `top`, `pants`)
-          VALUES (:userid, :now, :now, :name, :url, :top, :pants)";
+          (`userid`, `create_time`, `update_time`, `name`, `thumbnail`)
+          VALUES (:userid, :now, :now, :name, :url)";
   $sth = $pdo->prepare($sql);
   $sth->execute(array(
     ':userid' => $userid,
     ':now' => $now,
     ':name' => $name,
     ':url' => $url,
-    ':top' => $json['top'],
-    ':pants' => $json['pants'],
   ));
   $id = $pdo->lastInsertId();
 
+  if (!$id) {
+    Spokesman::say(array(
+      'code' => 3,
+      'msg' => '保存信息失败',
+    ));
+  }
+
   // 记录设计全文
   $sql = "INSERT INTO `t_diy_detail`
-          (`id`, `json`)
-          VALUES (:id, :json)";
+          (`id`, `cloth1`, `cloth2`, `data1`, `data2`)
+          VALUES (:id, :cloth1, :cloth2, :data1, :data2)";
   $sth = $pdo->prepare($sql);
-  $check = $sth->execute(array(
+  $data = array(
     ':id' => $id,
-    ':json' => $design,
-  ));
+    ':cloth1' => $cloth1,
+    ':cloth2' => $cloth2,
+    ':data1' => json_encode($data1),
+    ':data2' => json_encode($data2),
+  );
+  $check = $sth->execute($data);
 
   Spokesman::judge($check, '保存成功', '保存失败', array(
     'id' => $id,
@@ -141,23 +159,25 @@ function line_save() {
 add_action('wp_ajax_nopriv_line_save', "line_save");
 add_action('wp_ajax_line_save', "line_save");
 
-// 保存壁纸
-function line_create_wallpaper() {
-  header('Content-type:application/json; charset: UTF-8');
-  echo json_encode(array(
-    'msg' => 'line wallpaper',
-  ));
-  exit();
-}
-add_action('wp_ajax_nopriv_line_create_wallpaper', "line_create_wallpaper");
-add_action('wp_ajax_line_create_wallpaper', "line_create_wallpaper");
-
 // 添加到购物车并结算
 function line_buy() {
   header('Content-type:application/json; charset: UTF-8');
-  echo json_encode(array(
-    'msg' => 'line buy',
-  ));
+
+  global $woocommerce;
+  $design_id = $_REQUEST['id'];
+  $products = $_REQUEST['pid'];
+  $products = explode(',', $products);
+  $quantity = 1;
+  $variation_id = null;
+  $variation = null;
+  $cart_item_data = array(
+    'design_id' => $design_id,
+  );
+  foreach ($products as $product_id) {
+    $check = $woocommerce->cart->add_to_cart($product_id, $quantity, $variation_id, $variation, $cart_item_data);
+  }
+
+  Spokesman::judge($check, '购买成功', '购买失败');
   exit();
 }
 add_action('wp_ajax_nopriv_line_buy', "line_buy");
