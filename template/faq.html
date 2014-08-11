@@ -1,0 +1,38 @@
+<!-- Breadcrumb Start-->
+<div class="container">
+  <ol class="breadcrumb">
+    <li><a href="/">首页</a></li>
+    <li class="active">常见问题</li>
+  </ol>
+</div>
+<!-- Breadcrumb End-->
+<!-- Content start-->
+<div class="content container">
+  <section>
+    <h1>常见问题</h1>
+    <article>
+      <p>
+        广大网友在订制队服、下单购买时难免遇到各种问题，我们随时恭候大家的问询。<br>
+        以下是我们整理的，过去一段时间内大家最常遇到的问题，抽空看一看，相信可以帮您解决绝大部分疑惑和问题。
+      </p>
+    </article>
+  </section>
+  <div class="accordionMod panel-group" id="faqs">
+    {{#faqs}}
+    <div class="accordion-item panel panel-default">
+      <div class="panel-heading">
+        <h4 class="accordion-toggle" data-toggle="collapse" data-parent="#faqs" data-target="#answer-{{index}}">{{title}}</h4>
+      </div>
+      <div id="answer-{{index}}" class="panel-collapse collapse {{in}}">
+        <section class="accordion-inner panel-body">
+          {{{content}}}
+        </section>
+      </div>
+    </div>
+    {{/faqs}}
+  </div>
+  <div class="alert alert-info">
+    <p>如果以上内容无法解答您心中的疑问，请直接联系我们的客服：<a href="mailto:service@xline.com.cn">service@xline.com.cn</a>。</p>
+  </div>
+</div>
+<!-- Content end-->

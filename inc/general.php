@@ -9,7 +9,6 @@
  */
 require_once dirname(__FILE__) . "/Spokesman.class.php";
 
-define('DOING_AJAX', true);
 /**
  *  检查是否登录
  */

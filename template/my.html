@@ -1,0 +1,36 @@
+<!-- Breadcrumb Start-->
+<div class="container">
+  <ol class="breadcrumb">
+    <li><a href="/">首页</a></li>
+    <li class="active">我的衣柜</li>
+  </ol>
+</div>
+<!-- Breadcrumb End-->
+<!-- Content start-->
+<div class="container content">
+  {{#has_list}}
+  <ul class="row list">
+    {{#list}}
+    <li class="col-md-3 col-sm-6 col-xs-12">
+      <a href="/detail/{{id}}"><img src="{{thumbnail}}" class="img-thumbnail"></a>
+      <h3><a href="/detail/{{id}}">{{name}}</a></h3>
+    </li>
+    {{/list}}
+  </ul>
+  <ul class="pagination pagination-lg pull-right">
+    <li class="{{no-prev}}"><a href="{{base}}/{{prev}}">&laquo;</a></li>
+    {{#pages}}
+    <li class="{{active}}"><a href="{{base}}/{{to}}">{{page}}</a></li>
+    {{/pages}}
+    <li class="{{no-next}}"><a href="{{base}}/{{next}}">&raquo;</a></li>
+  </ul>
+  {{/has_list}}
+  {{^has_list}}
+  <div class="alert alert-info">
+    <h4>您还没有作品哟</h4>
+    <p>我们目前还没有收到您的作品，赶紧去 <a href="/diy" class="text-danger">定制</a> 吧</p>
+    <p><a href="/diy" class="btn btn-primary btn-lg">这就去定制我的球衣</a></p>
+  </div>
+  {{/has_list}}
+</div>
+<!-- Content End -->
