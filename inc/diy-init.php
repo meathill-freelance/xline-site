@@ -10,7 +10,7 @@
 require_once dirname(__FILE__) . "/Spokesman.class.php";
 
 function line_create_pic() {
-  $pdo = require_once dirname(__FILE__) . "/pdo.php";
+  $pdo = require dirname(__FILE__) . "/pdo.php";
   $userid = get_current_user_id();
   $type = $_REQUEST['type'];
   $now = date('Y-m-d H:i:s');
@@ -56,7 +56,7 @@ add_action('wp_ajax_line_create_pic', "line_create_pic");
 
 // 保存diy结果
 function line_save() {
-  $pdo = require_once dirname(__FILE__) . "/pdo.php";
+  $pdo = require dirname(__FILE__) . "/pdo.php";
   $userid = get_current_user_id();
   $name = $_REQUEST['name'];
   $url = $_REQUEST['url'];
@@ -182,3 +182,20 @@ function line_buy() {
 }
 add_action('wp_ajax_nopriv_line_buy', "line_buy");
 add_action('wp_ajax_line_buy', "line_buy");
+
+function map_cart_item($cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data) {
+  $pdo = require dirname(__FILE__) . "/pdo.php";
+  $design_id = $cart_item_data['design_id'];
+  $sql = "INSERT INTO `t_cart_item_map`
+          (`cart_item_key`, `product_id`, `quantity`, `variation_id`, `variation`, `design_id`)
+          VALUES ('$cart_item_key', '$product_id', '$quantity', '$variation_id', '$variation', '$design_id')";
+  $check = $pdo->query($sql);
+  if ($check) {
+    $check = $pdo->lastInsertId();
+    header('XLINE: ok - ' . $check);
+  } else {
+    header('XLINE: no');
+    var_dump($pdo->errorInfo());
+  }
+}
+add_action('woocommerce_add_to_cart', 'map_cart_item', 10, 6);
