@@ -14,6 +14,7 @@ header("Content-type: text/html; charset=UTF-8");
 
 // 判断当前模板
 $is_design = preg_match('/^\/design\/(\d+)\/?$/', $_SERVER['REQUEST_URI']);
+$is_diy = preg_match('/^\/diy/', $_SERVER['REQUEST_URI']);
 
 // 生成title等
 global $page, $paged;
@@ -22,6 +23,9 @@ $title = wp_title('|', FALSE, 'right') . get_bloginfo('name') . $page_num;
 if ($is_design) {
   global $design_data;
   $title = "球友作品 - " . $design_data['name'];
+}
+if ($is_diy) {
+  $title = '定制球衣';
 }
 
 // 生成主题和插件内容

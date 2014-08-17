@@ -25,31 +25,35 @@ $('.style-list')
     $('.tab-pane.active input:checked').each(function () {
       cloth.push(this.value);
     })
-    var flashvars = {
-      cloth: cloth.join(',')
-    };
-    var params = {
+    showFlash(cloth.join(','))
+
+    event.preventDefault();
+    return false;
+  });
+
+function showFlash(data) {
+  var flashvars = {
+      cloth: data
+    }
+    , params = {
       menu: "false",
       scale: "noScale",
       allowFullscreen: "true",
       allowScriptAccess: "always",
       bgcolor: "010101",
       wmode: "direct" // can cause issues with FP settings & webcam
-    };
-    var attributes = {
+    }
+    , attributes = {
       id:"DIY"
     };
-    $(this).hide();
-    $('.diy-container').removeClass('hide');
-    swfobject.embedSWF(
-      "/wp-content/themes/xline/swf/DIY.swf",
-      "diy-flash", "100%", "100%", "11.0.0",
-      "../swf/expressInstall.swf",
-      flashvars, params, attributes);
-
-    event.preventDefault();
-    return false;
-  });
+  $('#clothes-options').hide();
+  $('.diy-container').removeClass('hide');
+  swfobject.embedSWF(
+    "/wp-content/themes/xline/swf/DIY.swf",
+    "diy-flash", "100%", "100%", "11.0.0",
+    "../swf/expressInstall.swf",
+    flashvars, params, attributes);
+}
 
 // 回到选择款式的画面
 // 由flash调用

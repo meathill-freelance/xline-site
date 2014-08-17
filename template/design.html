@@ -3,12 +3,17 @@
   <ol class="breadcrumb">
     <li><a href="/">首页</a></li>
     <li><a href="/teams">XLINE球队</a></li>
-    <li class="active">{{name}} - by {{user_name}}</li>
+    <li class="active">{{name}} - by {{author}}</li>
   </ol>
 </div>
 <!-- Breadcrumb End-->
 <!-- Content start-->
 <div class="container content" id="design">
+  {{#buy}}
+  <div class="alert alert-{{#success}}success{{/success}}{{^success}}danger{{/success}}">
+    {{msg}}
+  </div>
+  {{/buy}}
   <div class="row">
     <div class="col-md-6 col-sm-12 pics">
       <img src="{{thumbnail}}" class="img-thumbnail head-pic">
@@ -16,13 +21,22 @@
     <div class="col-md-6 col-sm-12 detail">
       <h1>{{name}}</h1>
       <p>{{author}} 设计</p>
+      <hr>
+      <h3>预估价格：&yen;{{price}}</h3>
+      <form action="/design" method="post">
+        <input type="hidden" name="m" value="buy">
+        <input type="hidden" name="design-id" value="{{id}}">
+        <button class="btn btn-primary"><i class="fa fa-shopping-cart"></i> 添加至购物车</button>
+        <a href="/diy/{{id}}" class="btn btn-info"><i class="fa fa-code-fork"></i> 灵感来了，我想改一改</a>
+      </form>
+      <hr>
       <h3 class="share-title">分享给好友</h3>
       <div class="share-button-group">
-        <a class="btn btn-default"><i class="fa fa-qq"></i></a>
-        <a class="btn btn-default"><i class="fa fa-weibo"></i></a>
-        <a class="btn btn-default"><i class="fa fa-tencent-weibo"></i></a>
-        <a class="btn btn-default"><i class="fa fa-weixin"></i></a>
-        <a class="btn btn-default"><i class="fa fa-renren"></i></a>
+        <a class="btn btn-default" version="1.0" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url={{share_url}}&title={{share_title}}&pics={{thumbnail}}"><i class="fa fa-qq"></i></a>
+        <a class="btn btn-default" href="http://service.weibo.com/share/share.php?url={{share_url}}&type=button&ralateUid=2895877333&language=zh_cn&title={{share_title}}&pic={{thumbnail}}&searchPic=false&style=number"><i class="fa fa-weibo"></i></a>
+        <a class="btn btn-default" href="http://share.v.t.qq.com/index.php?c=share&a=index&url={{share_url}}&appkey=801532721&title={{share_title}}&pic={{thumbnail}}"><i class="fa fa-tencent-weibo"></i></a>
+        <button type="button" class="btn btn-default" id="share-weixin"><i class="fa fa-weixin"></i></button>
+        <a class="btn btn-default" href="http://www.connect.renren.com/share/sharer?url={{share_url}}&title={{share_title}}"><i class="fa fa-renren"></i></a>
       </div>
     </div>
   </div>
@@ -38,4 +52,24 @@
     </ul>
   </div>
 </div>
+<div class="modal fade" role="dialog" id="share-to-weixin">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">分享到微信</h4>
+      </div>
+      <div class="modal-body">
+        <p class="loading">
+          <i class="fa fa-2x fa-spinner fa-spin"></i><br>
+          加载二维码中，请稍候。
+        </p>
+        <p class="qrcode"></p>
+        <div class="alert alert-info">
+          请打开微信，选择“发现”，使用 “扫一扫” 即可将网页分享到我的朋友圈。
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <!-- Content End -->
