@@ -41,7 +41,9 @@ function ajax_login(){
 
 
   $user_signon = wp_signon($info);
-  Spokesman::judge(!is_wp_error($user_signon), '登录成功', '登录失败');
+  $success = !is_wp_error($user_signon);
+  $error_msg = $success ? '' : $user_signon->get_error_message();
+  Spokesman::judge($success, '登录成功', $error_msg);
   exit();
 }
 add_action('wp_ajax_nopriv_ajax_login', "ajax_login");

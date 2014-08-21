@@ -39,6 +39,14 @@ $(function () {
             .text(response.msg || ' 登录失败')
             .slideDown();
         }
+      },
+      error: function (xhr, status, error) {
+        $('[form=login-form]').prop('disabled', false)
+          .find('i').toggleClass('fa-check fa-spin fa-spinner');
+        form.find('.alert')
+          .addClass('alert-danger fa fa-frown-o')
+          .html(xhr.responseJSON.msg || ' 登录失败')
+          .slideDown();
       }
     });
     event.preventDefault();
