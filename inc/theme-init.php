@@ -44,3 +44,23 @@ function create_post_type() {
   );
 }
 add_action('init', 'create_post_type');
+
+/**
+ * 要求Wordpress使用SMTP发送邮件
+ * 从php角度来说这样就够了，不过有些SElinux里默认禁止php使用fsockopen连接外网
+ * 所以需要运行 `setsebool -P httpd_can_network_connect 1` 解禁
+ * @see http://yml.com/fv-b-1-619/selinux--apache-httpd--php-establishing-socket-connections-using-fsockopen---et-al.html
+ * @param PHPMailer $phpmailer
+ */
+function configure_smtp(PHPMailer $phpmailer) {
+  $phpmailer->isSMTP();
+  $phpmailer->Host = 'smtp.exmail.qq.com';
+  $phpmailer->SMTPAuth = true;
+  $phpmailer->Port = 465;
+  $phpmailer->Username = 'service@xline.com.cn';
+  $phpmailer->Password = 'xline@2014';
+  $phpmailer->SMTPSecure = 'ssl';
+  $phpmailer->From = 'service@xline.com.cn';
+  $phpmailer->FromName = 'XLINE客服';
+}
+add_action('phpmailer_init', 'configure_smtp');
