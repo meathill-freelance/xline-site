@@ -1,0 +1,82 @@
+{{#designs}}
+<div class="row" id="design-{{id}}">
+  <div class="col-md-3 col-sm-12 thumbnail">
+    <img src="{{thumbnail}}" width="100%">
+    <a class="btn btn-danger btn-block delete-button"><i class="fa fa-times"></i> 移除</a>
+  </div>
+  <div class="col-md-9 col-sm-12 list">
+    <div class="row">
+      <div class="col-md-6 col-sm-12">
+        <h2>{{title}}</h2>
+        <dl>
+          {{#clothes}}
+          <dt>{{product_name}}</dt>
+          <dd>{{price}}</dd>
+          {{/clothes}}
+        </dl>
+      </div>
+      <div class="col-md-6 col-sm-12 well well-sm">
+        <h3>拥有优惠码？</h3>
+        <input type="text" name="coupon_code" class="form-control" id="coupon_code" value="" placeholder="优惠券代码" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" name="apply_coupon">使用</button>
+          </span>
+        {{after_woocommerce_cart_coupon}}
+      </div>
+    </div>
+    <div class="panel panel-primary">
+      <div class="panel-heading">我的球队</div>
+      <div class="panel-body">您可以在这里给球队的全体成员配置球衣。</div>
+      <table class="table">
+        <thead>
+        <tr>
+          <th>号码</th>
+          <th>姓名</th>
+          <th>尺码</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#member}}
+        <tr>
+          <td>{{number}}</td>
+          <td>{{name}}</td>
+          <td>{{size}}</td>
+          <td>
+            <button type="button" class="btn btn-danger delete-button"><i class="fa fa-times"></i></button>
+          </td>
+        </tr>
+        {{/member}}
+        </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="4">
+            <button type="button" class="btn btn-info new-row-button"><i class="fa fa-plus"></i> 增加一人</button>
+            <script type="text/x-handlebars-template">
+              {{ = {{{ }}} = }}
+              <tr>
+                <td><a href="#number" class="edit"></a></td>
+                <td><a href="#playername" class="edit"></a></td>
+                <td>
+                  <select name="size">
+                    <option value="1">大/L</option>
+                    <option value="2">加大/XL</option>
+                    <option value="3">加加大/XL</option>
+                    <option value="4">中/M</option>
+                    <option value="5">小/S</option>
+                  </select>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-success add-button"><i class="fa fa-check"></i></button>
+                </td>
+              </tr>
+              {{{ = {{ }} = }}}
+            </script>
+          </td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+{{/designs}}
