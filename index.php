@@ -25,7 +25,7 @@ $result = array(
   'theme_url' => get_template_directory_uri(),
   'items0' => array_slice($designs, 0, 5),
   'items1' => array_slice($designs, 5, 3),
-  'items2' => array_slice($designs, 7, 1),
+  'items2' => array_slice($designs, 8, 1),
 );
 
 $template = dirname(__FILE__) . '/template/index.html';

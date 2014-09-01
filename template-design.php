@@ -38,6 +38,8 @@ $price = (int)get_post_meta($clothes['cloth1'], '_price', true);
 if (isset($clothes['cloth2'])) {
   $price += (int)get_post_meta($clothes['cloth2'], '_price', true);
 }
+$products = array($clothes['cloth1'], $clothes['cloth2']);
+$design_data['pid'] = implode(',', array_filter($products));
 
 if (isset($_REQUEST['m'])) {
   switch ($_REQUEST['m']) {
@@ -84,6 +86,7 @@ $share = array(
 // 引入js
 function add_share_js() {
   echo '<script src="/wp-content/themes/xline/js/share.js"></script>';
+  echo '<script src="/wp-content/themes/xline/js/shop.js"></script>';
 }
 add_action('xline_footer', add_share_js);
 

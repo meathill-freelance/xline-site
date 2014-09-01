@@ -13,12 +13,73 @@ global $woocommerce;
 
 wc_print_notices();
 
-do_action( 'woocommerce_before_cart' ); ?>
+do_action( 'woocommerce_before_cart' );
+do_action( 'woocommerce_before_cart_table' );
 
-<form action="<?php echo esc_url( WC()->cart->get_cart_url() ); ?>" method="post">
+// xline的逻辑，以设计为基础列表商品
+$result = array(
+  'cart_url' => esc_url(WC()->cart->get_cart_url()),
+);
+$designs = array();
+$pdo = require dirname(__FILE__) . "/../../inc/pdo.php";
+// 开始整理购物车中的物品，以design_id为分类依据
+foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+  $product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
+  $product_id = apply_filters('woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key);
+  $is_visible = apply_filters('woocommerce_cart_item_visible', true, $cart_item, $cart_item_key);
+  if (!$product || !$product->exists() || $cart_item['quantity'] == 0 || !$is_visible) {
+    continue;
+  }
 
-<?php do_action( 'woocommerce_before_cart_table' ); ?>
+  $variation = $cart_item['variation'];
+  $design_id = $variation['attribute_pa_size']; // 设计id放在不影响售价的尺码属性中
+  $design = $designs[$design_id];
+  $design = isset($design) ? $design : array(
+    'id' => $design_id,
+    'clothes' => array(),
+  );
+  $design['clothes'][] = array(
+    'title' => apply_filters('woocommerce_cart_item_name', $product->get_title(), $cart_item, $cart_item_key),
+    'price' => apply_filters('woocommerce_cart_item_price', WC()->cart->get_product_price($product), $cart_item, $cart_item_key),
+  );
 
+  // 取所有号码姓名等
+  if (!$design['member']) {
+    $sql = "SELECT *
+            FROM `t_cart_item_map`
+            WHERE `design_id`=$design_id AND `cart_item_key`='$cart_item_key'";
+    var_dump($sql);
+    $design['member'] = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+  }
+  // 取缩略图
+  if (!$design['thumbnail']) {
+    $sql = "SELECT `thumbnail`
+            FROM `t_user_diy`
+            WHERE `id`=$design_id";
+    $design['thumbnail'] = $pdo->query($sql)->fetchColumn();
+  }
+  $designs[$design_id] = $design;
+}
+// 计算每套的总计价格
+foreach ($designs as $id => $design) {
+  $amount = 0;
+  foreach ($design['clothes'] as $cloth) {
+    $matches = array();
+    preg_match('/\d+\.\d+/', $cloth['price'], $matches);
+    $amount += $matches[0];
+  }
+  $design['clothes'][] = array(
+    'title' => '总计',
+    'price' => $amount,
+  );
+  $designs[$id] = $design;
+}
+
+$result['designs'] = array_values($designs);
+
+Spokesman::toHTML($result, dirname(__FILE__) . '/../../template/cart.html');
+
+?>
 <table class="shop_table cart" cellspacing="0">
 	<thead>
 		<tr>
