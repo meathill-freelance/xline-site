@@ -1,28 +1,43 @@
-<form action="{{cart_url}}" method="post">
+<form action="{{cart_url}}" method="post" id="cart-list">
+  <datalist id="size-options">
+    <option value="1">大/L</option>
+    <option value="2">加大/XL</option>
+    <option value="3">加加大/XL</option>
+    <option value="4">中/M</option>
+    <option value="5">小/S</option>
+  </datalist>
   {{#designs}}
-  <div class="row" id="design-{{id}}">
+  <div class="row design" id="design-{{id}}">
     <div class="col-md-3 col-sm-12">
       <img src="{{thumbnail}}" width="100%" class="img-thumbnail">
-      <a class="btn btn-danger btn-block delete-button"><i class="fa fa-times"></i> 移除</a>
+      <a class="btn btn-danger btn-block remove-design-button" href="/wp-admin/admin-ajax.php?remove_item={{cart_items}}&wpnonce={{wpnonce}}&design={{id}}"><i class="fa fa-times"></i> 移除本设计</a>
     </div>
-    <div class="col-md-9 col-sm-12 list">
+    <div class="col-md-9 col-sm-12">
       <div class="row">
-        <div class="col-md-8 col-sm-12">
+        <div class="col-md-6 col-sm-9">
           <h2>这套设计包括：</h2>
-          <dl>
+          <dl class="row">
             {{#clothes}}
-            <dt>{{title}}</dt>
-            <dd>{{{price}}}</dd>
+            <dt class="col-md-6">{{title}}</dt>
+            <dd class="col-md-6">{{{price}}}</dd>
             {{/clothes}}
           </dl>
         </div>
-        <div class="col-md-4 col-sm-12 well well-sm">
-          <h3>拥有优惠码？</h3>
-          <div class="form-group">
-            <input type="text" name="coupon_code" class="form-control" id="coupon_code" placeholder="优惠券代码" />
+        <div class="col-md-2 col-sm-3 count">
+          <div class="alert alert-info">
+            计划购买<br>
+            <strong class="text-warning">{{count}}</strong>套
           </div>
-          <button type="button" class="btn btn-default btn-block" name="apply_coupon">使用</button>
-          {{after_woocommerce_cart_coupon}}
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <div class="well well-sm">
+            <h3>拥有优惠码？</h3>
+            <div class="form-group">
+              <input type="text" name="coupon_code" class="form-control" id="coupon_code" placeholder="优惠券代码" />
+            </div>
+            <button type="button" class="btn btn-default btn-block" name="apply_coupon">使用</button>
+            {{after_woocommerce_cart_coupon}}
+          </div>
         </div>
       </div>
       <div class="panel panel-primary">
@@ -40,11 +55,11 @@
           <tbody>
           {{#member}}
           <tr>
-            <td>{{number}}</td>
-            <td>{{name}}</td>
-            <td>{{size}}</td>
+            <td><a href="#number" class="edit">{{number}}</a> </td>
+            <td><a href="#name" class="edit">{{name}}</a> </td>
+            <td><a href="#size" class="edit" data-type="select" data-options="size-options">{{size}}</a> </td>
             <td>
-              <button type="button" class="btn btn-danger delete-button"><i class="fa fa-times"></i></button>
+              <button type="button" class="btn btn-sm btn-danger delete-button"><i class="fa fa-times"></i></button>
             </td>
           </tr>
           {{/member}}
@@ -52,27 +67,7 @@
           <tfoot>
           <tr>
             <td colspan="4">
-              <button type="button" class="btn btn-info new-row-button"><i class="fa fa-plus"></i> 增加一人</button>
-              <script type="text/x-handlebars-template">
-                {{=<% %>=}}
-                <tr>
-                  <td><a href="#number" class="edit"></a></td>
-                  <td><a href="#playername" class="edit"></a></td>
-                  <td>
-                    <select name="size">
-                      <option value="1">大/L</option>
-                      <option value="2">加大/XL</option>
-                      <option value="3">加加大/XL</option>
-                      <option value="4">中/M</option>
-                      <option value="5">小/S</option>
-                    </select>
-                  </td>
-                  <td>
-                    <button type="button" class="btn btn-success add-button"><i class="fa fa-check"></i></button>
-                  </td>
-                </tr>
-                <%={{ }}=%>
-              </script>
+              <button type="button" class="btn btn-info new-row-button"><i class="fa fa-plus"></i> 增加一套</button>
             </td>
           </tr>
           </tfoot>
@@ -82,3 +77,35 @@
   </div>
   {{/designs}}
 </form>
+
+<script type="text/x-handlebars-template" id="cart-row">
+  {{=<% %>=}}
+  <tr>
+    <td><a href="#number" class="edit">{{number}}</a> </td>
+    <td><a href="#name" class="edit">{{name}}</a> </td>
+    <td><a href="#size" class="edit" data-type="select" data-options="size-options">{{size}}</a> </td>
+    <td>
+      <button type="button" class="btn btn-primary add-button"><i class="fa fa-check"></i></button>
+      <button type="button" class="btn btn-danger delete-button"><i class="fa fa-times"></i></button>
+    </td>
+  </tr>
+  <%={{ }}=%>
+</script>
+
+<div class="modal fade" id="edit-modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+        <h4 class="modal-title">编辑</h4>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary">保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>

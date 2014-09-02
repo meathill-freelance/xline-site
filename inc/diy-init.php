@@ -224,3 +224,26 @@ function map_cart_item($cart_item_key, $product_id, $quantity, $variation_id, $v
   }
 }
 add_action('woocommerce_add_to_cart', 'map_cart_item', 10, 6);
+
+function line_remove_design($cart_items, $design, $wpnonce) {
+  $cart_items = explode(',', $cart_items);
+  if (count($cart_items) == 0 || !$wpnonce || wp_verify_nonce($wpnonce, 'woocommerce-cart')) {
+    header('HTTP/1.1 400 Bad Request');
+    Spokesman::say(array(
+      'code' => 1,
+      'msg' => '参数错误',
+    ));
+    exit();
+  }
+
+  foreach ($cart_items as $cart_item_key) {
+    WC()->cart->set_quantity($cart_item_key, 0);
+  }
+  Spokesman::say(array(
+    'code' => 0,
+    'design' => $design,
+    'msg' => '移除成功',
+  ));
+}
+add_action('wp_ajax_nopriv_line_remove_design', "line_remove_design");
+add_action('wp_ajax_line_remove_design', "line_remove_design");
