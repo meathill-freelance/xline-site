@@ -43,7 +43,7 @@
       <div class="panel panel-primary">
         <div class="panel-heading">我的球队</div>
         <div class="panel-body">您可以在这里给球队的全体成员配置球衣。</div>
-        <table class="table">
+        <table class="table member-list">
           <thead>
           <tr>
             <th>号码</th>
@@ -54,11 +54,12 @@
           </thead>
           <tbody>
           {{#member}}
-          <tr>
+          <tr id="{{id}}">
             <td><a href="#number" class="edit">{{number}}</a> </td>
             <td><a href="#name" class="edit">{{name}}</a> </td>
-            <td><a href="#size" class="edit" data-type="select" data-options="size-options">{{size}}</a> </td>
+            <td><a href="#size" class="edit" data-type="select" data-options="#size-options">{{size}}</a> </td>
             <td>
+              <button type="button" class="btn btn-sm btn-primary save-button" disabled><i class="fa fa-check"></i></button>
               <button type="button" class="btn btn-sm btn-danger delete-button"><i class="fa fa-times"></i></button>
             </td>
           </tr>
@@ -83,10 +84,10 @@
   <tr>
     <td><a href="#number" class="edit">{{number}}</a> </td>
     <td><a href="#name" class="edit">{{name}}</a> </td>
-    <td><a href="#size" class="edit" data-type="select" data-options="size-options">{{size}}</a> </td>
+    <td><a href="#size" class="edit" data-type="select" data-options="#size-options">{{size}}</a> </td>
     <td>
-      <button type="button" class="btn btn-primary add-button"><i class="fa fa-check"></i></button>
-      <button type="button" class="btn btn-danger delete-button"><i class="fa fa-times"></i></button>
+      <button type="button" class="btn btn-sm btn-primary save-button"><i class="fa fa-check"></i></button>
+      <button type="button" class="btn btn-sm btn-danger delete-button"><i class="fa fa-times"></i></button>
     </td>
   </tr>
   <%={{ }}=%>
