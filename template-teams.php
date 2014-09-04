@@ -50,6 +50,7 @@ get_header();
 
 $result = array_merge($pages, array(
   'list' => $list,
+  'is_all' => $index === false,
   'is_basketball' => $index === 0,
   'is_football' => $index === 1,
   'is_golf' => $index === 2,

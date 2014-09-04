@@ -8,7 +8,7 @@
     , Collection = Backbone.Collection.extend({
       url: API
     })
-    , Model = Backbone.Modal.extend({
+    , Model = Backbone.Model.extend({
       urlRoot: API
     });
 

@@ -46,6 +46,8 @@ $result = array(
   'nonce' => wp_create_nonce(),
   'login_nonce' => $login_nonce,
   'lost_pwd_url' => wp_lostpassword_url(),
+  'is_homepage' => $pagename == '',
+  'is_teams' => $pagename == 'teams',
+  'is_diy' => $pagename == 'diy',
 );
-
 Spokesman::toHTML($result, dirname(__FILE__) . '/template/header.html');
