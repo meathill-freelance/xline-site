@@ -35,6 +35,7 @@
     <ul class="pull-right social">
       <li class="weibo button"><a href="http://weibo.com/xlinecom" class="fa fa-weibo" target="_blank"></a></li>
       <li class="qq button"><a href="http://wpa.qq.com/msgrd?v=3&uin=1493043244&site=xline&menu=yes" class="fa fa-qq" target="_blank"></a></li>
+      <li class="weixin button hidden-lg"><a href="#qrcode-modal" class="fa fa-weixin" data-toggle="modal"></a></li>
       <li class="vertical-spacer"></li>
       <li class="phone button"><i class="fa fa-phone"></i></li>
       <li class="phone-number">
@@ -67,7 +68,7 @@
       <ul class="nav navbar-nav navbar-right me">
         {{^is_login}}
         <li class="login">
-          <a href="#login-modal" data-toggle="modal">登录</a>
+          <a href="#login-modal" data-toggle="modal">登录/注册</a>
         </li>
         {{/is_login}}
         <li class="dropdown profile {{^is_login}}hide{{/is_login}}">
