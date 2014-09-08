@@ -15,7 +15,7 @@ $pdo = require_once(dirname(__FILE__) . '/inc/pdo.php');
 // 取设计内容
 $alias = array('basketball', 'football', 'golf');
 $path = array_slice(explode('/', $_SERVER['REQUEST_URI']), 2);
-$type = is_numeric($path[0]) ? '' : $path[0];
+$type = !is_array($path) || is_numeric($path[0]) ? '' : $path[0];
 $index = array_search($type, $alias);
 $page = (int)array_pop($path);
 $pagesize = 16;

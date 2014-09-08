@@ -19,6 +19,7 @@ do_action( 'woocommerce_before_cart_table' );
 // xline的逻辑，以设计为基础列表商品
 $result = array(
   'cart_url' => esc_url(WC()->cart->get_cart_url()),
+  'no_coupon' => WC()->cart->coupons_enabled(),
 );
 $designs = array();
 $pdo = require dirname(__FILE__) . "/../../inc/pdo.php";

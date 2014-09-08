@@ -4,7 +4,7 @@
 ;(function (ns) {
   'use strict';
 
-  var API = '/wp-content/themes/xline/api/'
+  var API = '/wp-content/themes/xline/api/index.php'
     , Collection = Backbone.Collection.extend({
       url: API
     })
@@ -23,7 +23,7 @@
     initialize: function () {
       this.template = Handlebars.compile($('#cart-row').html());
       this.modal = $('#edit-modal');
-      this.model.on('click', '.btn-primary', _.bind(this.modal_saveHandler, this));
+      this.modal.on('click', '.btn-primary', _.bind(this.modal_saveHandler, this));
       this.collection = new Collection();
       this.on('add', this.collection_addHandler, this);
     },
@@ -42,30 +42,42 @@
     },
     edit_clickHandler: function (event) {
       var button = $(event.currentTarget)
-        , type = button.data('type') ? button.data('type') : 'input'
-        , init = {
-          prop: button.attr('href').substr(1),
-          value: button.text()
-        }
+        , attr = button.data()
+        , title = button.attr('title')
+        , modal = attr.modal ? attr.modal : 'input'
         , self = this;
       this.editTarget = button;
-      if (type === 'select') {
-        init.options = $(button.data('options')).html();
+      attr.prop = button.attr('href').substr(1);
+      attr.value = button.text();
+      attr.title = title;
+      if (modal === 'select') {
+        attr.options = $(attr.options).html();
       }
-      $.get('/wp-content/themes/xline/template/edit/' + type + '.hbs', function (response) {
+      $.get('/wp-content/themes/xline/template/edit/' + modal + '.hbs', function (response) {
         var template = Handlebars.compile(response);
-        self.modal.modal('show')
-          .find('.modal-body').html(template(init));
+        self.modal
+          .data('init', attr)
+          .modal('show')
+          .find('.modal-body').html(template(attr));
       });
     },
-    modal_saveHandler: function (event) {
-      var value = this.model.find('[name=prop]').val()
+    modal_saveHandler: function () {
+      var field = this.modal.find('[name=prop]')
+        , value = field.val()
         , tr = this.editTarget.closest('tr')
         , id = tr.attr('id')
         , model = this.collection.get(id) || new Model({id: id})
-        , prop = this.editTarget.attr('href').substr(1);
-      this.editTarget.innerText = value;
-      model.set(prop, value);
+        , attr = this.modal.data('init');
+      if (attr.modal === 'select') {
+        this.editTarget.text(field.find(':selected').text());
+      } else {
+        this.editTarget.text(value);
+      }
+      this.modal.modal('hide');
+      model.set(attr.prop, value);
+      if (!model.collection) {
+        this.collection.add(model, {silent: true});
+      }
     },
     newRowButton_clickHandler: function (event) {
       var button = $(event.currentTarget)
@@ -102,7 +114,7 @@
       var button = $(event.currentTarget)
         , tr = button.closest('tr')
         , id = tr.attr('id')
-        , model = this.collection.get('id');
+        , model = this.collection.get(id);
       if (model) {
         model.save();
       }

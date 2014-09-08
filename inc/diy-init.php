@@ -160,11 +160,10 @@ add_action('wp_ajax_nopriv_line_save', "line_save");
 add_action('wp_ajax_line_save', "line_save");
 
 // 添加到购物车并结算
-function line_buy() {
+function line_buy($player_name = '', $number = '', $size = '') {
   header('Content-type:application/json; charset: UTF-8');
 
   $pdo = require dirname(__FILE__) . "/pdo.php";
-  global $woocommerce;
 
   $design_id = $_REQUEST['id'];
   $products = $_REQUEST['pid'];
@@ -172,7 +171,6 @@ function line_buy() {
   $quantity = 1;
   $variation_id = null;
   $variation = null;
-  $cart_item_data = null;
 
   // 取设计稿
   $sql = "SELECT `cloth1`, `cloth2`, `data1`, `data2`
@@ -188,9 +186,14 @@ function line_buy() {
     $data = json_decode($data, true);
     $color = '';
     foreach ($data['steps'] as $step) {
-      if ($step['type'] == 'number' && $step['style'] < 8) {
-        $color = 'double';
-        break;
+      if ($player_name == '' && $step['type'] == 'teamname' && $step['title'] == '姓名') {
+        $player_name = $step['teamname'];
+      }
+      if ($step['type'] == 'number') {
+        if ($step['style'] < 8) {
+          $color = 'double';
+        }
+        $number = isset($number) ? $number : $step['number'];
       }
     }
     $variation = $variations[0]['attributes']['attribute_pa_number'] == $color ?
@@ -198,6 +201,11 @@ function line_buy() {
     $variation_id = $variation['variation_id'];
     $variation = $variation['attributes'];
     $variation['attribute_pa_size'] = $design_id; // 把设计id放在不影响售价的尺码属性中
+    $cart_item_data = array(
+      'size' => $size,
+      'player_name' => $player_name,
+      'number' => $number,
+    );
 
     $check = WC()->cart->add_to_cart($product_id, $quantity, $variation_id, $variation, $cart_item_data);
   }
@@ -211,9 +219,12 @@ add_action('wp_ajax_line_buy', "line_buy");
 function map_cart_item($cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data) {
   $pdo = require dirname(__FILE__) . "/pdo.php";
   $design_id = $variation['attribute_pa_size'];
+  $player_name = $cart_item_data['player_name'];
+  $number = $cart_item_data['number'];
+  $size = $cart_item_data['size'];
   $sql = "INSERT INTO `t_cart_item_map`
-          (`cart_item_key`, `product_id`, `quantity`, `variation_id`, `variation`, `design_id`)
-          VALUES ('$cart_item_key', '$product_id', '$quantity', '$variation_id', '', '$design_id')";
+          (`cart_item_key`, `product_id`, `design_id`, `playername`, `number`, `size`)
+          VALUES ('$cart_item_key', '$product_id', '$design_id', '$player_name', '$number', '$size')";
   $check = $pdo->query($sql);
   if ($check) {
     $check = $pdo->lastInsertId();

@@ -51,6 +51,13 @@ class API {
         $handlers['create']($args, $attr);
         break;
 
+      case 'PUT':
+        if (empty($handlers['create'])) {
+          header("HTTP/1.1 406 Not Acceptable");
+        }
+        $handlers['create']($args, $attr);
+        break;
+
       case 'OPTIONS':
         Header("accept: ok");
         break;

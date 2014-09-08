@@ -43,9 +43,9 @@
         $('.me .login').remove();
         $('.me .profile').removeClass('hide');
         this.showResult(true, '登录成功')
-        var self = this;
+        var modal = this.$el.closest('.modal');
         setTimeout(function () {
-          self.$el.modal('hide');
+          modal.modal('hide');
         }, 3000);
       } else {
         this.showResult(false, response.msg || ' 登录失败');

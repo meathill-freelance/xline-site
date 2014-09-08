@@ -31,11 +31,11 @@
         </div>
         <div class="col-md-4 col-sm-12">
           <div class="well well-sm">
-            <h3>拥有优惠码？</h3>
+            <h3>{{#no_coupon}}不能使用优惠码{{/no_coupon}}{{^no_coupon}}拥有优惠码？{{/no_coupon}}</h3>
             <div class="form-group">
-              <input type="text" name="coupon_code" class="form-control" id="coupon_code" placeholder="优惠券代码" />
+              <input type="text" name="coupon_code" class="form-control" id="coupon_code" placeholder="优惠券代码" {{#no_coupon}}disabled{{/no_coupon}} />
             </div>
-            <button type="button" class="btn btn-default btn-block" name="apply_coupon">使用</button>
+            <button type="button" class="btn btn-default btn-block" name="apply_coupon" {{#no_coupon}}disabled{{/no_coupon}}>使用</button>
             {{after_woocommerce_cart_coupon}}
           </div>
         </div>
@@ -55,11 +55,11 @@
           <tbody>
           {{#member}}
           <tr id="{{id}}">
-            <td><a href="#number" class="edit">{{number}}</a> </td>
-            <td><a href="#name" class="edit">{{name}}</a> </td>
-            <td><a href="#size" class="edit" data-type="select" data-options="#size-options">{{size}}</a> </td>
+            <td><a href="#number" class="edit" data-type="number" data-maxlength="2" title="号码">{{number}}</a></td>
+            <td><a href="#name" class="edit" data-maxlength="8" title="姓名">{{name}}</a></td>
+            <td><a href="#size" class="edit" data-modal="select" data-options="#size-options" title="尺码">{{size}}</a></td>
             <td>
-              <button type="button" class="btn btn-sm btn-primary save-button" disabled><i class="fa fa-check"></i></button>
+              <button type="button" class="btn btn-sm btn-primary save-button"><i class="fa fa-check"></i></button>
               <button type="button" class="btn btn-sm btn-danger delete-button"><i class="fa fa-times"></i></button>
             </td>
           </tr>
@@ -77,6 +77,10 @@
     </div>
   </div>
   {{/designs}}
+  <div class="btn-group pull-right">
+    <button type="button" class="btn btn-info" name="update_cart">计算购物车金额</button>
+    <button class="checkout-button btn btn-primary alt wc-forward" name="proceed">结算</button>
+  </div>
 </form>
 
 <script type="text/x-handlebars-template" id="cart-row">
@@ -104,8 +108,8 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         <button type="button" class="btn btn-primary">保存</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
