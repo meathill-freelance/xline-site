@@ -218,13 +218,14 @@ add_action('wp_ajax_line_buy', "line_buy");
 
 function map_cart_item($cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data) {
   $pdo = require dirname(__FILE__) . "/pdo.php";
+  $me = get_current_user_id();
   $design_id = $variation['attribute_pa_size'];
   $player_name = $cart_item_data['player_name'];
   $number = $cart_item_data['number'];
   $size = $cart_item_data['size'];
   $sql = "INSERT INTO `t_cart_item_map`
-          (`cart_item_key`, `product_id`, `design_id`, `playername`, `number`, `size`)
-          VALUES ('$cart_item_key', '$product_id', '$design_id', '$player_name', '$number', '$size')";
+          (`cart_item_key`, `product_id`, `design_id`, `user_id`, `playername`, `number`, `size`)
+          VALUES ('$cart_item_key', '$product_id', '$design_id', $me, '$player_name', '$number', '$size')";
   $check = $pdo->query($sql);
   if ($check) {
     $check = $pdo->lastInsertId();

@@ -7,7 +7,7 @@
     <option value="5">小/S</option>
   </datalist>
   {{#designs}}
-  <div class="row design" id="design-{{id}}">
+  <div class="row design" id="design-{{id}}" data-keys="{{cart_items}}">
     <div class="col-md-3 col-sm-12">
       <img src="{{thumbnail}}" width="100%" class="img-thumbnail">
       <a class="btn btn-danger btn-block remove-design-button" href="/wp-admin/admin-ajax.php?remove_item={{cart_items}}&wpnonce={{wpnonce}}&design={{id}}"><i class="fa fa-times"></i> 移除本设计</a>

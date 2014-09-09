@@ -45,7 +45,9 @@
         , tr = button.closest('tr')
         , id = tr.attr('id')
         , model = this.collection.get('id') || new Backbone.Modal({id: id});
-      model.destroy();
+      model.destroy({
+        success: _.bind(this.model_destroySuccessHandler, this)
+      });
     },
     edit_clickHandler: function (event) {
       var button = $(event.currentTarget)
@@ -69,19 +71,28 @@
         this.collection.add(model, {silent: true});
       }
     },
-    model_successHandler: function () {
+    model_destroySuccessHandler: function (model) {
+      this.$('#' + model.has('id') ? model.id : model.cid).fadeOut(function () {
+        $(this).remove();
+      });
+    },
+    model_saveSuccessHandler: function () {
       this.$('.save-button.processing')
         .removeClass('processing')
         .prop('disabled', false)
         .find('i').removeClass('fa-spin fa-spinner')
-        .addClass('fa-check');
+        .addClass('fa-check')
+        .end().siblings()
+          .prop('disabled', false);
     },
     newRowButton_clickHandler: function (event) {
       var button = $(event.currentTarget)
         , design = button.closest('.design')
-        , id = Number(design.attr('id').match(/design\-(\d+)/)[1]);
+        , id = Number(design.attr('id').match(/design\-(\d+)/)[1])
+        , keys = design.data('keys');
       this.collection.add({
-        design: id
+        design: id,
+        keys: keys
       });
     },
     removeDesignButton_clickHandler: function (event) {
@@ -115,12 +126,12 @@
       if (model) {
         model.save(null, {
           patch: true,
-          success: _.bind(this.model_successHandler, this)
+          success: _.bind(this.model_saveSuccessHandler, this)
         });
         button.addClass('processing')
-          .prop('disabled', true)
           .find('i').removeClass('fa-check')
           .addClass('fa-spin fa-spinner');
+        button.add(button.siblings()).prop('disabled', true);
       }
     },
     removeDesign_successHandler: function (response) {
