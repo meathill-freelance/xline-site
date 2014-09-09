@@ -9,6 +9,11 @@
       url: API
     })
     , Model = Backbone.Model.extend({
+      defaults: {
+        'number': 9,
+        'name': '',
+        'size': 1
+      },
       urlRoot: API
     });
 
@@ -22,8 +27,10 @@
     },
     initialize: function () {
       this.template = Handlebars.compile($('#cart-row').html());
-      this.modal = $('#edit-modal');
-      this.modal.on('click', '.btn-primary', _.bind(this.modal_saveHandler, this));
+      this.modal = new ns.EditModal({
+        el: '#edit-modal'
+      });
+      this.modal.on('save', this.modal_saveHandler, this);
       this.collection = new Collection();
       this.on('add', this.collection_addHandler, this);
     },
@@ -43,41 +50,31 @@
     edit_clickHandler: function (event) {
       var button = $(event.currentTarget)
         , attr = button.data()
-        , title = button.attr('title')
-        , modal = attr.modal ? attr.modal : 'input'
-        , self = this;
+        , title = button.attr('title');
       this.editTarget = button;
       attr.prop = button.attr('href').substr(1);
       attr.value = button.text();
       attr.title = title;
-      if (modal === 'select') {
-        attr.options = $(attr.options).html();
-      }
-      $.get('/wp-content/themes/xline/template/edit/' + modal + '.hbs', function (response) {
-        var template = Handlebars.compile(response);
-        self.modal
-          .data('init', attr)
-          .modal('show')
-          .find('.modal-body').html(template(attr));
-      });
+      this.modal.load(attr);
     },
     modal_saveHandler: function () {
-      var field = this.modal.find('[name=prop]')
-        , value = field.val()
-        , tr = this.editTarget.closest('tr')
+      var tr = this.editTarget.closest('tr')
         , id = tr.attr('id')
         , model = this.collection.get(id) || new Model({id: id})
-        , attr = this.modal.data('init');
-      if (attr.modal === 'select') {
-        this.editTarget.text(field.find(':selected').text());
-      } else {
-        this.editTarget.text(value);
-      }
-      this.modal.modal('hide');
-      model.set(attr.prop, value);
+        , attr = this.modal.attr;
+      this.editTarget.text(this.modal.getLabel());
+      this.modal.hide();
+      model.set(attr.prop, this.modal.getValue());
       if (!model.collection) {
         this.collection.add(model, {silent: true});
       }
+    },
+    model_successHandler: function () {
+      this.$('.save-button.processing')
+        .removeClass('processing')
+        .prop('disabled', false)
+        .find('i').removeClass('fa-spin fa-spinner')
+        .addClass('fa-check');
     },
     newRowButton_clickHandler: function (event) {
       var button = $(event.currentTarget)
@@ -116,7 +113,14 @@
         , id = tr.attr('id')
         , model = this.collection.get(id);
       if (model) {
-        model.save();
+        model.save(null, {
+          patch: true,
+          success: _.bind(this.model_successHandler, this)
+        });
+        button.addClass('processing')
+          .prop('disabled', true)
+          .find('i').removeClass('fa-check')
+          .addClass('fa-spin fa-spinner');
       }
     },
     removeDesign_successHandler: function (response) {

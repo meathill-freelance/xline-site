@@ -11,12 +11,14 @@
 get_header();
 
 $page = array();
-if (have_posts()) {the_post();
+if (have_posts()) {
+  the_post();
   $content = get_the_content('继续阅读');
+  $post_id = get_the_ID();
   $page = array(
-    'id' => get_the_ID(),
+    'id' => $post_id,
     'is_featured' => is_sticky() && is_home() && ! is_paged(),
-    'class' => join(' ', get_post_class($class, $post_id)),
+    'class' => join(' ', get_post_class('', $post_id)),
     'full_title' => the_title_attribute(array('echo' => FALSE)),
     'is_search' => is_search(),
     'link' => apply_filters('the_permalink', get_permalink()),
