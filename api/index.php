@@ -4,10 +4,10 @@ require_once(dirname(__FILE__) . '/../inc/API.class.php');
 require_once(dirname(__FILE__) . '/../inc/Spokesman.class.php');
 
 $api = new API(array(
-  'fetch' => fetch,
-  'update' => update,
-  'create' => create,
-  'delete' => delete,
+  'fetch' => 'fetch',
+  'update' => 'update',
+  'create' => 'create',
+  'delete' => 'delete',
 ));
 
 function fetch() {
@@ -54,11 +54,11 @@ function create($args, $attr) {
 
   global $pdo;
   $keys = explode(',', $attr['keys']);
+  $me = get_current_user_id();
   foreach ($keys as $key) {
     $cart_item = WC()->cart->get_cart()[$key];
     $product_id = apply_filters('woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $key);
     $design_id = $cart_item['variation']['attribute_pa_size'];
-    $me = get_current_user_id();
     $quantity = $cart_item['quantity'];
     WC()->cart->set_quantity($key, $quantity + 1);
     $sql = "INSERT INTO `t_cart_item_map`
@@ -71,8 +71,54 @@ function create($args, $attr) {
 }
 
 function delete($args) {
-  $attr = array(
-    'status' => 1,
-  );
-  update($args, $attr);
+  $args = Spokesman::extract();
+  $id = $args['id'];
+  $me = get_current_user_id();
+  global $pdo;
+
+  // 取map内容
+  $sql = "SELECT `cart_item_key`, `design_id`, `playername`, `number`, `size`
+          FROM `t_cart_item_map`
+          WHERE `id`=$id AND `user_id`=$me";
+  $map = $pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+
+  // 取其它同一套设计的衣服
+  $key = $map['cart_item_key'];
+  $design_id = $map['design_id'];
+  $player_name = $map['playername'];
+  $number = $map['number'];
+  $size = $map['size'];
+  $sql = "SELECT `id`, `cart_item_key`
+          FROM `t_cart_item_map`
+          WHERE `design_id`=$design_id AND `playername`='$player_name' AND `number`=$number
+            AND `size`=$size AND `user_id`=$me AND `status`=0 AND `cart_item_key`!='$key'";
+  $other = $pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+
+  // 删掉这套衣服
+  $ids = array($id);
+  if ($other) {
+    $ids[] = $other['id'];
+  }
+  $ids = implode(',', $ids);
+  $sql = "UPDATE `t_cart_item_map`
+          SET `status`=1
+          WHERE `id` IN ($ids)";
+  $pdo->query($sql);
+
+  // 修改购物车
+  $keys = array($key);
+  if ($other) {
+    $keys[] = $other['cart_item_key'];
+  }
+  foreach ($keys as $key) {
+    $cart_item = WC()->cart->get_cart()[$key];
+    $quantity = $cart_item['quantity'];
+    WC()->cart->set_quantity($key, $quantity - 1);
+  }
+
+  // 返回状态
+  Spokesman::say(array(
+    'code' => 0,
+    'msg' => '删除成功',
+  ));
 }

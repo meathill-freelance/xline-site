@@ -13,12 +13,6 @@ class API {
     $request = file_get_contents('php://input');
     if ($request) {
       $attr = json_decode($request, true);
-      // 去掉链接中的http://r.yxpopo.com/
-      if (is_array($attr)) {
-        foreach ($attr as $key => $value) {
-          $attr[$key] = str_replace('http://r.yxpopo.com/', '', $value);
-        }
-      }
     }
 
     header("Content-Type:application/json;charset=utf-8");
