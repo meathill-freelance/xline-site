@@ -71,6 +71,15 @@ function line_save() {
   $data2 = count($json) > 1 ? $json[1] : '';
   $cloth2 = $data2 ? $data2['tid'] : '';
 
+  // 衣服类型
+  if ($cloth1 >= 140) {
+    $type = 2;
+  } elseif ($cloth1 <= 84) {
+    $type = 0;
+  } else {
+    $type = 1;
+  }
+
   if ($id > 0) { // 修改
     // 判断设计所有者
     $sql = "SELECT `userid`
@@ -119,14 +128,15 @@ function line_save() {
 
   // 保存设计
   $sql = "INSERT INTO `t_user_diy`
-          (`userid`, `create_time`, `update_time`, `name`, `thumbnail`)
-          VALUES (:userid, :now, :now, :name, :url)";
+          (`userid`, `create_time`, `update_time`, `name`, `thumbnail`, `type`)
+          VALUES (:userid, :now, :now, :name, :url, :type)";
   $sth = $pdo->prepare($sql);
   $sth->execute(array(
     ':userid' => $userid,
     ':now' => $now,
     ':name' => $name,
     ':url' => $url,
+    ':type' => $type,
   ));
   $id = $pdo->lastInsertId();
 
@@ -210,7 +220,7 @@ function line_buy($player_name = '', $number = '', $size = '') {
     $check = WC()->cart->add_to_cart($product_id, $quantity, $variation_id, $variation, $cart_item_data);
   }
 
-  Spokesman::judge($check, '购买成功', '购买失败');
+  Spokesman::judge($check, '已成功添加至购物车', '添加失败');
   exit();
 }
 add_action('wp_ajax_nopriv_line_buy', "line_buy");
@@ -237,9 +247,11 @@ function map_cart_item($cart_item_key, $product_id, $quantity, $variation_id, $v
 }
 add_action('woocommerce_add_to_cart', 'map_cart_item', 10, 6);
 
-function line_remove_design($cart_items, $design, $wpnonce) {
-  $cart_items = explode(',', $cart_items);
-  if (count($cart_items) == 0 || !$wpnonce || wp_verify_nonce($wpnonce, 'woocommerce-cart')) {
+function line_remove_design() {
+  $cart_items = explode(',', $_POST['remove_item']);
+  $design = $_POST['design'];
+  $wpnonce = $_POST['wpnonce'];
+  if (count($cart_items) == 0 || !$wpnonce || !wp_verify_nonce($wpnonce, 'woocommerce-cart')) {
     header('HTTP/1.1 400 Bad Request');
     Spokesman::say(array(
       'code' => 1,

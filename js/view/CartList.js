@@ -11,7 +11,7 @@
     , Model = Backbone.Model.extend({
       defaults: {
         'number': 9,
-        'name': '',
+        'playername': '',
         'size': 1
       },
       urlRoot: API
@@ -44,9 +44,10 @@
       var button = $(event.currentTarget)
         , tr = button.closest('tr')
         , id = tr.attr('id')
-        , model = this.collection.get('id') || new Backbone.Modal({id: id});
+        , model = this.collection.get(id) || new Model({id: id});
       model.destroy({
-        success: _.bind(this.model_destroySuccessHandler, this)
+        success: _.bind(this.model_destroySuccessHandler, this),
+        error: _.bind(this.model_errorHandler, this)
       });
     },
     edit_clickHandler: function (event) {
@@ -72,18 +73,32 @@
       }
     },
     model_destroySuccessHandler: function (model) {
-      this.$('#' + model.has('id') ? model.id : model.cid).fadeOut(function () {
+      this.$('#' + (model.has('id') ? model.id : model.cid)).fadeOut(function () {
         $(this).remove();
       });
     },
-    model_saveSuccessHandler: function () {
-      this.$('.save-button.processing')
+    model_errorHandler: function (model) {
+      var tr = this.$('#' + (model.has('id') ? model.id : model.cid));
+      tr.find('button').prop('disabled', false)
+        .find('.fa-spin').removeClass('fa-spin fa-spinner')
+        .addClass(function () {
+          return $(this).parent().is('.save-button') ? 'fa-check' : 'fa-times';
+        });
+      tr.find('.msg').remove();
+      tr.children().last().append('<span class="msg text-danger">操作失败</span>');
+    },
+    model_saveSuccessHandler: function (model) {
+      var tr = this.$('#' + (model.has('id') ? model.id : model.cid))
+        , button = tr.find('.save-button.processing');
+      button
         .removeClass('processing')
         .prop('disabled', false)
         .find('i').removeClass('fa-spin fa-spinner')
         .addClass('fa-check')
         .end().siblings()
           .prop('disabled', false);
+      tr.find('.msg').remove();
+      tr.children().last().append('<span class="msg text-success">保存成功</span>');
     },
     newRowButton_clickHandler: function (event) {
       var button = $(event.currentTarget)
@@ -106,17 +121,19 @@
             action: 'line_remove_design'
           };
         for (var i = 0, len = arr.length; i < len; i++) {
-          var kv = arr.split('=');
+          var kv = arr[i].split('=');
           data[kv[0]] = kv[1];
         }
         $.ajax(url, {
           data: data,
           dataType: 'json',
+          type: 'post',
           context: this,
           success: this.removeDesign_successHandler,
           error: this.removeDesign_errorHandler
         });
       }
+      event.preventDefault();
     },
     saveButton_clickHandler: function (event) {
       var button = $(event.currentTarget)
@@ -126,7 +143,8 @@
       if (model) {
         model.save(null, {
           patch: true,
-          success: _.bind(this.model_saveSuccessHandler, this)
+          success: _.bind(this.model_saveSuccessHandler, this),
+          error: _.bind(this.model_errorHandler, this)
         });
         button.addClass('processing')
           .find('i').removeClass('fa-check')

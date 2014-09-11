@@ -16,16 +16,30 @@ $pdo = require_once(dirname(__FILE__) . '/inc/pdo.php');
 // 最新作品
 $sql = "SELECT `id`, `userid`, `name`, `thumbnail`
         FROM `t_user_diy`
-        WHERE `status`=0
+        WHERE `status`=0 AND `type`=0
         ORDER BY `id` DESC
-        LIMIT 9";
-$designs = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+        LIMIT 5";
+$basketball = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+
+$sql = "SELECT `id`, `userid`, `name`, `thumbnail`
+        FROM `t_user_diy`
+        WHERE `status`=0 AND `type`=1
+        ORDER BY `id` DESC
+        LIMIT 3";
+$football = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+
+$sql = "SELECT `id`, `userid`, `name`, `thumbnail`
+        FROM `t_user_diy`
+        WHERE `status`=0 AND `type`=2
+        ORDER BY `id` DESC
+        LIMIT 1";
+$golf = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
 $result = array(
   'theme_url' => get_template_directory_uri(),
-  'items0' => array_slice($designs, 0, 5),
-  'items1' => array_slice($designs, 5, 3),
-  'items2' => array_slice($designs, 8, 1),
+  'basketball' => $basketball,
+  'football' => $football,
+  'golf' => $golf,
 );
 
 $template = dirname(__FILE__) . '/template/index.html';

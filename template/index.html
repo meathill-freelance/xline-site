@@ -55,7 +55,7 @@
         <h2>衣库 <em>/</em> 篮球</h2>
         <p>在这里找到你的设计灵感、与你感兴趣的球队联系、制作你的球队名片。</p>
       </li>
-      {{#items0}}
+      {{#basketball}}
       <li class="{{alias}} item">
         <a href="/design/{{id}}" title="查看详情"><img src="{{thumbnail}}" width="100%"></a>
         <a class="detail" href="/design/{{id}}" title="查看详情">
@@ -63,13 +63,13 @@
           <p>所在地：{{province}}</p>
         </a>
       </li>
-      {{/items0}}
+      {{/basketball}}
       <li class="category">
         <a href="/teams/basketball" class="more">more &gt;&gt;</a>
         <h2>衣库 <em>/</em> 足球</h2>
         <p>在这里找到你的设计灵感、与你感兴趣的球队联系、制作你的球队名片。</p>
       </li>
-      {{#items1}}
+      {{#football}}
       <li class="{{alias}} item">
         <a href="/design/{{id}}" title="查看详情"><img src="{{thumbnail}}" width="100%"></a>
         <a class="detail" href="/design/{{id}}" title="查看详情">
@@ -77,13 +77,13 @@
           <p>所在地：{{province}}</p>
         </a>
       </li>
-      {{/items1}}
+      {{/football}}
       <li class="category">
         <a href="/teams/basketball" class="more">more &gt;&gt;</a>
         <h2>衣库 <em>/</em> 高尔夫</h2>
         <p>在这里找到你的设计灵感、与你感兴趣的球队联系、制作你的球队名片。</p>
       </li>
-      {{#items2}}
+      {{#golf}}
       <li class="{{alias}} item">
         <a href="/design/{{id}}" title="查看详情"><img src="{{thumbnail}}" width="100%"></a>
         <a class="detail" href="/design/{{id}}" title="查看详情">
@@ -91,7 +91,7 @@
           <p>所在地：{{province}}</p>
         </a>
       </li>
-      {{/items2}}
+      {{/golf}}
     </ul>
   </div>
 

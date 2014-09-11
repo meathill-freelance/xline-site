@@ -31,16 +31,25 @@ function fetch() {
 }
 
 function update($args, $attr) {
+  if (isset($attr['id'])) {
+    $args['id'] = $attr['id'];
+    unset($attr['id']);
+  }
   global $pdo;
+  $id = (int)$args['id'];
   $set = array();
+  $values = array();
   foreach ($attr as $key => $value) {
-    $set[] = "`$key`='$value'";
+    $set[] = "`$key`=:$key";
+    $values[":$key"] = $value;
   }
   $set = implode(', ', $set);
   $sql = "UPDATE `t_cart_item_map`
           SET $set
-          WHERE `id`=" . $args['id'];
-  $result = $pdo->query($sql);
+          WHERE `id`=$id";
+  $sth = $pdo->prepare($sql);
+  $result = $sth->execute($values);
+  $attr['sql'] = $sql;
 
   Spokesman::judge($result, '修改成功', '修改失败', $attr);
 }
@@ -71,6 +80,7 @@ function create($args, $attr) {
 }
 
 function delete($args) {
+  require_once dirname(__FILE__) . '/../../../../wp-load.php';
   $args = Spokesman::extract();
   $id = $args['id'];
   $me = get_current_user_id();

@@ -35,7 +35,7 @@ $(function () {
       error: function (xhr, status, error) {
         console.log(xhr, status, error);
         $('#msg')
-          .text('购买失败，请稍后重试')
+          .text('添加失败，请稍后重试')
           .addClass('alert-danger')
           .slideDown();
         reset(button);

@@ -10,7 +10,7 @@
   <div class="row design" id="design-{{id}}" data-keys="{{cart_items}}">
     <div class="col-md-3 col-sm-12">
       <img src="{{thumbnail}}" width="100%" class="img-thumbnail">
-      <a class="btn btn-danger btn-block remove-design-button" href="/wp-admin/admin-ajax.php?remove_item={{cart_items}}&wpnonce={{wpnonce}}&design={{id}}"><i class="fa fa-times"></i> 移除本设计</a>
+      <a class="btn btn-danger btn-block remove-design-button" href="/wp-admin/admin-ajax.php?remove_item={{cart_items}}&design={{id}}&wpnonce={{wpnonce}}"><i class="fa fa-times"></i> 移除本设计</a>
     </div>
     <div class="col-md-9 col-sm-12">
       <div class="row">
@@ -54,9 +54,9 @@
           </thead>
           <tbody>
           {{#member}}
-          <tr id="{{id}}">
+          <tr id="{{id}}" data-group="{{group}}">
             <td><a href="#number" class="edit" data-type="number" data-maxlength="2" title="号码">{{number}}</a></td>
-            <td><a href="#name" class="edit" data-maxlength="8" title="姓名">{{name}}</a></td>
+            <td><a href="#playername" class="edit" data-maxlength="8" title="姓名">{{playername}}</a></td>
             <td><a href="#size" class="edit" data-modal="select" data-options="#size-options" title="尺码">{{size}}</a></td>
             <td>
               <button type="button" class="btn btn-sm btn-primary save-button"><i class="fa fa-check"></i></button>

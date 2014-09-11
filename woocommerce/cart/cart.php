@@ -16,6 +16,14 @@ wc_print_notices();
 do_action( 'woocommerce_before_cart' );
 do_action( 'woocommerce_before_cart_table' );
 
+$size = array(
+  '大/L',
+  '加大/XL',
+  '加加大/XL',
+  '中/M',
+  '小/S',
+);
+
 // xline的逻辑，以设计为基础列表商品
 $result = array(
   'cart_url' => esc_url(WC()->cart->get_cart_url()),
@@ -47,13 +55,22 @@ foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
   );
 
   // 取所有号码姓名等
-  if (!$design['member']) {
-    $sql = "SELECT *
-            FROM `t_cart_item_map`
-            WHERE `design_id`=$design_id AND `cart_item_key`='$cart_item_key'";
-    $design['member'] = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-    $design['count'] = count($design['member']);
+  $sql = "SELECT *
+          FROM `t_cart_item_map`
+          WHERE `design_id`=$design_id AND `cart_item_key`='$cart_item_key' AND `status`=0";
+  $members = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+  if ($design['member']) {
+    foreach ($members as $key => $member) {
+      $design['member'][$key]['group'] = implode(',', array($member['id'], $design['member'][$key]['id']));
+    }
+  } else {
+    foreach ($members as $key => $member) {
+      $members[$key]['size'] = $size[(int)$member['size'] - 1];
+    }
+    $design['count'] = count($members);
+    $design['member'] = $members;
   }
+
   // 取缩略图
   if (!$design['thumbnail']) {
     $sql = "SELECT `thumbnail`
