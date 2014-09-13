@@ -80,6 +80,16 @@ function line_save() {
     $type = 1;
   }
 
+  // 设计名称为空的话以队名取代
+  if (!$name) {
+    foreach ($data1['step'] as $step) {
+      if ($step['type'] == 'teamname' && $step['title'] == '队名') {
+        $name = $step['teamname'];
+        break;
+      }
+    }
+  }
+
   if ($id > 0) { // 修改
     // 判断设计所有者
     $sql = "SELECT `userid`
@@ -187,6 +197,20 @@ function line_buy($player_name = '', $number = '', $size = '') {
           FROM `t_diy_detail`
           WHERE `id`=$design_id";
   $design = $pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+  $data1 = json_decode($design['data1'], true);
+  foreach ($design['steps'] as $step) {
+    if ($step['type'] == 'teamname') {
+      if($step['title'] == '队名') {
+        $teamname = $step['teamname'];
+      } else {
+        $player_name = $step['teamname'];
+      }
+    }
+    if ($step['type'] == 'number') {
+      $number = $step['number'];
+    }
+  }
+  $me = get_current_user_id();
 
   foreach ($products as $product_id) {
     $product = new WC_Product_Variable($product_id);
@@ -212,12 +236,25 @@ function line_buy($player_name = '', $number = '', $size = '') {
     $variation = $variation['attributes'];
     $variation['attribute_pa_size'] = $design_id; // 把设计id放在不影响售价的尺码属性中
     $cart_item_data = array(
-      'size' => $size,
-      'player_name' => $player_name,
-      'number' => $number,
+      'teamname' => $teamname,
+      'customer' => $me,
     );
 
-    $check = WC()->cart->add_to_cart($product_id, $quantity, $variation_id, $variation, $cart_item_data);
+    $key = WC()->cart->add_to_cart($product_id, $quantity, $variation_id, $variation, $cart_item_data);
+
+    $sql = "INSERT INTO `t_cart_item_map`
+            (`cart_item_key`, `product_id`, `design_id`, `user_id`, `playername`, `number`, `size`)
+            VALUES (:key, :product_id, :design_id, :user_id, :playername, :number, '1')";
+    $sth = $pdo->prepare($sql);
+    $check = $sth->execute(array(
+      ':key' => '$key',
+      ':product_id' => '$product_id',
+      ':design_id' => '$design_id',
+      ':user_id' => $me,
+      ':playername' => '$player_name',
+      ':number' => '$number',
+      ':size' => 1,
+    ));
   }
 
   Spokesman::judge($check, '已成功添加至购物车', '添加失败');
@@ -245,7 +282,6 @@ function map_cart_item($cart_item_key, $product_id, $quantity, $variation_id, $v
     var_dump($pdo->errorInfo());
   }
 }
-add_action('woocommerce_add_to_cart', 'map_cart_item', 10, 6);
 
 function line_remove_design() {
   $cart_items = explode(',', $_POST['remove_item']);

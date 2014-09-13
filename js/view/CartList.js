@@ -14,6 +14,9 @@
         'playername': '',
         'size': 1
       },
+      parse: function (response) {
+        return response.data;
+      },
       urlRoot: API
     });
 
@@ -32,12 +35,12 @@
       });
       this.modal.on('save', this.modal_saveHandler, this);
       this.collection = new Collection();
-      this.on('add', this.collection_addHandler, this);
+      this.collection.on('add', this.collection_addHandler, this);
     },
     collection_addHandler: function (model) {
       var tr = $(this.template());
       tr.attr('id', model.cid);
-      this.$('.design-' + model.get('design')).find('.member-list')
+      this.$('#design-' + model.get('design')).find('.member-list')
         .append(tr);
     },
     deleteButton_clickHandler: function (event) {
@@ -49,10 +52,16 @@
         success: _.bind(this.model_destroySuccessHandler, this),
         error: _.bind(this.model_errorHandler, this)
       });
+      button
+        .prop('disabled', true)
+        .find('i')
+          .removeClass('fa-times')
+          .addClass('fa-spin fa-spinner')
+        .end().siblings().prop('disabled', true);
     },
     edit_clickHandler: function (event) {
       var button = $(event.currentTarget)
-        , attr = button.data()
+        , attr = _.extend({}, button.data())
         , title = button.attr('title');
       this.editTarget = button;
       attr.prop = button.attr('href').substr(1);
@@ -139,8 +148,12 @@
       var button = $(event.currentTarget)
         , tr = button.closest('tr')
         , id = tr.attr('id')
+        , group = tr.data('group')
         , model = this.collection.get(id);
       if (model) {
+        if (!model.has(group)) {
+          model.set('group', group);
+        }
         model.save(null, {
           patch: true,
           success: _.bind(this.model_saveSuccessHandler, this),

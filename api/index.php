@@ -31,12 +31,12 @@ function fetch() {
 }
 
 function update($args, $attr) {
-  if (isset($attr['id'])) {
-    $args['id'] = $attr['id'];
+  if (isset($attr['group'])) {
+    $group = $attr['group'];
+    unset($attr['group']);
     unset($attr['id']);
   }
   global $pdo;
-  $id = (int)$args['id'];
   $set = array();
   $values = array();
   foreach ($attr as $key => $value) {
@@ -46,7 +46,7 @@ function update($args, $attr) {
   $set = implode(', ', $set);
   $sql = "UPDATE `t_cart_item_map`
           SET $set
-          WHERE `id`=$id";
+          WHERE `id` IN ($group)";
   $sth = $pdo->prepare($sql);
   $result = $sth->execute($values);
   $attr['sql'] = $sql;
@@ -55,15 +55,11 @@ function update($args, $attr) {
 }
 
 function create($args, $attr) {
-  if (isset($attr['id'])) {
-    $args = array('id' => $attr['id']);
-    unset($attr['id']);
-    return update($args, $attr);
-  }
-
+  require_once dirname(__FILE__) . '/../../../../wp-load.php';
   global $pdo;
   $keys = explode(',', $attr['keys']);
   $me = get_current_user_id();
+  $group = array();
   foreach ($keys as $key) {
     $cart_item = WC()->cart->get_cart()[$key];
     $product_id = apply_filters('woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $key);
@@ -72,11 +68,21 @@ function create($args, $attr) {
     WC()->cart->set_quantity($key, $quantity + 1);
     $sql = "INSERT INTO `t_cart_item_map`
           (`cart_item_key`, `product_id`, `design_id`, `user_id`, `playername`, `number`, `size`)
-          VALUES ('$key', '$product_id', '$design_id', $me, '{$attr['name']}', '{$attr['number']}', '{$attr['size']}'";
-    $id = $pdo->query($sql)->lastInsertId();
+          VALUES (:key, :product_id, :design_id, :user_id, :playername, :number, :size)";
+    $state = $pdo->prepare($sql);
+    $state->execute(array(
+      ':key' => $key,
+      ':product_id' => $product_id,
+      ':design_id' => $design_id,
+      ':user_id' => $me,
+      ':playername' => $attr['playername'],
+      ':number' => $attr['number'],
+      ':size' => $attr['size'],
+    ));
+    $group[] = $pdo->lastInsertId();
   }
-  $attr['id'] = $id;
-  Spokesman::judge($id, '添加成功', '添加失败', $attr);
+
+  Spokesman::judge($group, '添加成功', '添加失败', array('group' => implode(',', $group)));
 }
 
 function delete($args) {

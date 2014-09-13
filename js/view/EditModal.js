@@ -4,6 +4,7 @@
 ;(function (ns) {
   ns.EditModal = Backbone.View.extend({
     events: {
+      'shown.bs.modal': 'shownHandler',
       'keydown input': 'input_keydownHandler',
       'click .btn-primary': 'confirmHandler'
     },
@@ -37,6 +38,9 @@
       if (event.keyCode === 13) {
         this.trigger('save');
       }
+    },
+    shownHandler: function () {
+      this.$('input').focus().select();
     }
   });
 }(xline.view));
