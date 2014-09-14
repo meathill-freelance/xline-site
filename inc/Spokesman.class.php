@@ -18,18 +18,18 @@ class Spokesman {
   public static function judge($result, $success, $error, $args = null, $extra = null) {
     header("Content-Type:application/json;charset=UTF-8");
     if ($result) {
-      echo json_encode(array(
+      echo json_encode(array_merge(array(
         'code' => 0,
         'msg' => $success,
-        'data' => $args
-      ));
+        'data' => $extra
+      ), (array)$args));
     } else {
       header("HTTP/1.1 400 Bad Request");
-      echo json_encode(array(
+      echo json_encode(array_merge(array(
         'code' => 1,
         'msg' => $error,
-        'data' => $args
-      ));
+        'data' => $extra
+      ), (array)$args));
     }
   }
 

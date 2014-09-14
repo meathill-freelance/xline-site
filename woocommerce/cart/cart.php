@@ -28,6 +28,7 @@ $size = array(
 $result = array(
   'cart_url' => esc_url(WC()->cart->get_cart_url()),
   'has_coupon' => WC()->cart->coupons_enabled(),
+  'wpnonce' => wp_create_nonce('woocommerce-cart')
 );
 $designs = array();
 $pdo = require dirname(__FILE__) . "/../../inc/pdo.php";
@@ -93,7 +94,6 @@ foreach ($designs as $id => $design) {
     'price' => "&yen; $amount",
   );
   $design['cart_items'] = implode(',', $design['cart_items']);
-  $design['wpnonce'] = wp_create_nonce('woocommerce-cart');
   $designs[$id] = $design;
 }
 
@@ -102,8 +102,6 @@ $result['designs'] = array_values($designs);
 Spokesman::toHTML($result, dirname(__FILE__) . '/../../template/cart.html');
 
 do_action( 'woocommerce_after_cart_table' ); ?>
-
-</form>
 
 <div class="cart-collaterals">
 

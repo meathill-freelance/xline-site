@@ -3,6 +3,8 @@ $pdo = require_once(dirname(__FILE__) . '/../inc/pdo.php');
 require_once(dirname(__FILE__) . '/../inc/API.class.php');
 require_once(dirname(__FILE__) . '/../inc/Spokesman.class.php');
 
+define('WOOCOMMERCE_CART', true);
+
 $api = new API(array(
   'fetch' => 'fetch',
   'update' => 'update',
@@ -82,7 +84,13 @@ function create($args, $attr) {
     $group[] = $pdo->lastInsertId();
   }
 
-  Spokesman::judge($group, '添加成功', '添加失败', array('group' => implode(',', $group)));
+  WC()->cart->calculate_totals();
+  Spokesman::judge($group, '添加成功', '添加失败', array(
+    'quantity' => $quantity + 1,
+    'sub' => WC()->cart->subtotal,
+    'ship' => WC()->cart->shipping_total,
+    'amount' => WC()->cart->total,
+  ), array('group' => implode(',', $group)));
 }
 
 function delete($args) {
@@ -132,9 +140,14 @@ function delete($args) {
     WC()->cart->set_quantity($key, $quantity - 1);
   }
 
+  WC()->cart->calculate_totals();
   // 返回状态
   Spokesman::say(array(
     'code' => 0,
     'msg' => '删除成功',
+    'quantity' => $quantity - 1,
+    'sub' => WC()->cart->subtotal,
+    'ship' => WC()->cart->shipping_total,
+    'amount' => WC()->cart->total,
   ));
 }

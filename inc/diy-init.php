@@ -198,7 +198,7 @@ function line_buy($player_name = '', $number = '', $size = '') {
           WHERE `id`=$design_id";
   $design = $pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
   $data1 = json_decode($design['data1'], true);
-  foreach ($design['steps'] as $step) {
+  foreach ($data1['steps'] as $step) {
     if ($step['type'] == 'teamname') {
       if($step['title'] == '队名') {
         $teamname = $step['teamname'];
@@ -247,13 +247,12 @@ function line_buy($player_name = '', $number = '', $size = '') {
             VALUES (:key, :product_id, :design_id, :user_id, :playername, :number, '1')";
     $sth = $pdo->prepare($sql);
     $check = $sth->execute(array(
-      ':key' => '$key',
-      ':product_id' => '$product_id',
-      ':design_id' => '$design_id',
+      ':key' => $key,
+      ':product_id' => $product_id,
+      ':design_id' => $design_id,
       ':user_id' => $me,
-      ':playername' => '$player_name',
-      ':number' => '$number',
-      ':size' => 1,
+      ':playername' => $player_name,
+      ':number' => $number,
     ));
   }
 

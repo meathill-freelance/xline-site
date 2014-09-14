@@ -20,6 +20,21 @@
       urlRoot: API
     });
 
+  function updateTotal(response) {
+    if ('quantity' in response) {
+      $('.quantity').text(response.quantity);
+    }
+    if ('sub' in response) {
+      $('.cart-subtotal .amount').text('¥ ' + response.sub);
+    }
+    if ('ship' in response) {
+      $('.shipping .amount').text('¥ ' + response.ship);
+    }
+    if ('amount' in response) {
+      $('.order-total .amount').text('¥ ' + response.amount);
+    }
+  }
+
   ns.CartList = Backbone.View.extend({
     events: {
       'click .remove-design-button': 'removeDesignButton_clickHandler',
@@ -81,7 +96,8 @@
         this.collection.add(model, {silent: true});
       }
     },
-    model_destroySuccessHandler: function (model) {
+    model_destroySuccessHandler: function (model, response) {
+      updateTotal(response);
       this.$('#' + (model.has('id') ? model.id : model.cid)).fadeOut(function () {
         $(this).remove();
       });
@@ -96,7 +112,7 @@
       tr.find('.msg').remove();
       tr.children().last().append('<span class="msg text-danger">操作失败</span>');
     },
-    model_saveSuccessHandler: function (model) {
+    model_saveSuccessHandler: function (model, response) {
       var tr = this.$('#' + (model.has('id') ? model.id : model.cid))
         , button = tr.find('.save-button.processing');
       button
@@ -108,6 +124,11 @@
           .prop('disabled', false);
       tr.find('.msg').remove();
       tr.children().last().append('<span class="msg text-success">保存成功</span>');
+
+      updateTotal(response);
+      if ('group' in model.changed) {
+        tr.data('group', model.get('group'));
+      }
     },
     newRowButton_clickHandler: function (event) {
       var button = $(event.currentTarget)
