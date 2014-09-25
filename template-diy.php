@@ -21,12 +21,12 @@ function add_diy_js() {
     echo '<script src="/wp-content/themes/xline/js/diy-auto.js"></script>';
   }
 }
-add_action('xline_footer', add_diy_js);
+add_action('xline_footer', 'add_diy_js');
 
 function add_diy_css() {
   echo '<link rel="stylesheet" href="/wp-content/themes/xline/css/line.css">';
 }
-add_action('xline_head', add_diy_css);
+add_action('xline_head', 'add_diy_css');
 
 get_header();
 
