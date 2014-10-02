@@ -46,6 +46,22 @@ function create_post_type() {
 add_action('init', 'create_post_type');
 
 /**
+ * 在订单页上显示导出按钮
+ * @param $actions 按钮列表
+ * @param $the_order 排序
+ */
+function add_output_button_to_order_page($actions, $the_order = null) {
+  global $post;
+  $actions['view'] = array(
+    'url' 		=> get_theme_root_uri() . '/api/output.php?post=' . $post->ID,
+    'name' 		=> '导出',
+    'action' 	=> "output",
+  );
+  return $actions;
+}
+add_filter('woocommerce_admin_order_actions', 'add_output_button_to_order_page');
+
+/**
  * 要求Wordpress使用SMTP发送邮件
  * 从php角度来说这样就够了，不过有些SElinux里默认禁止php使用fsockopen连接外网
  * 所以需要运行 `setsebool -P httpd_can_network_connect 1` 解禁

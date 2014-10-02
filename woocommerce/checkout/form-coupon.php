@@ -23,7 +23,7 @@ wc_print_notice( $info_message, 'notice' );
       <input type="text" name="coupon_code" class="form-control" placeholder="请输入优惠券代码" id="coupon_code" />
     </div>
     <div class="col-md-6 col-sm-4 col-xs-3">
-      <input class="btn btn-default" name="apply_coupon" value="使用优惠券" />
+      <button class="btn btn-default" name="apply_coupon" value="使用优惠券">使用优惠券</button>
     </div>
 	</div>
 </form>
