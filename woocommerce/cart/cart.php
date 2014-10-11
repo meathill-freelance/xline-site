@@ -43,8 +43,7 @@ foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
 
   $variation = $cart_item['variation'];
   $design_id = $variation['attribute_pa_size']; // 设计id放在不影响售价的尺码属性中
-  $design = $designs[$design_id];
-  $design = isset($design) ? $design : array(
+  $design = array_key_exists($design_id, $designs) ? $designs[$design_id] : array(
     'id' => $design_id,
     'clothes' => array(),
     'cart_items' => array(),
@@ -60,7 +59,7 @@ foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
           FROM `t_cart_item_map`
           WHERE `design_id`=$design_id AND `cart_item_key`='$cart_item_key' AND `status`=0";
   $members = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-  if ($design['member']) {
+  if (array_key_exists('member', $design)) {
     foreach ($members as $key => $member) {
       $design['member'][$key]['group'] = implode(',', array($member['id'], $design['member'][$key]['id']));
     }
@@ -73,7 +72,7 @@ foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
   }
 
   // 取缩略图
-  if (!$design['thumbnail']) {
+  if (!array_key_exists('thumbnail', $design)) {
     $sql = "SELECT `thumbnail`
             FROM `t_user_diy`
             WHERE `id`=$design_id";
