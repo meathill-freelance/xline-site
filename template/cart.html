@@ -29,7 +29,7 @@
             <div class="form-group">
               <input type="text" name="coupon_code" class="form-control" id="coupon_code" placeholder="优惠券代码" {{^has_coupon}}disabled{{/has_coupon}} />
             </div>
-            <button type="button" class="btn btn-default btn-block" name="apply_coupon" {{^has_coupon}}disabled{{/has_coupon}}>使用</button>
+            <button class="btn btn-default btn-block" name="apply_coupon" value="使用" {{^has_coupon}}disabled{{/has_coupon}}>使用</button>
             {{after_woocommerce_cart_coupon}}
           </div>
         </div>
