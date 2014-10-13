@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>生产单输出</title>
+  <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../pure-html/css/output.css">
+</head>
+<body>
+<header class="container">
+  <h1>XLINE.COM生产工单</h1>
+  <a class="btn btn-primary print-button hidden-print" href="javascript:print();"><i class="fa fa-print"></i> 打印</a>
+</header>
+<hr>
+<div class="container">
+  <div class="panel panel-primary">
+    <div class="panel-heading"><h3>用户信息</h3></div>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th>用户</th><td>meathill</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel panel-primary">
+    <div class="panel-heading"><h2>设计内容</h2></div>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>部分</th>
+        <th>设计</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>{{part}}</td>
+        <td>{{content}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel panel-primary">
+    <div class="panel-heading"><h2>队伍信息</h2></div>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>队名</th>
+        <th>号码</th>
+        <th>姓名</th>
+        <th>尺码</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>{{teamname}}</td>
+        <td>{{number}}</td>
+        <td>{{playername}}</td>
+        <td>{{size}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<script src="//cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="//cdn.staticfile.org/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>
+</body>
+</html>
