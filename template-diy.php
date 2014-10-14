@@ -10,7 +10,8 @@
  * @since 
  */
 
-$id = (int)array_pop(explode('/', $_SERVER['REQUEST_URI']));
+$path = explode('/', $_SERVER['REQUEST_URI']);
+$id = (int)array_pop($path);
 
 // 将定制界面的js加入
 function add_diy_js() {
