@@ -24,7 +24,7 @@ function add_diy_js() {
 add_action('xline_footer', 'add_diy_js');
 
 function add_diy_css() {
-  echo '<link rel="stylesheet" href="/wp-content/themes/xline/css/line.css">';
+  echo '<link rel="stylesheet" href="/wp-content/themes/xline/pure-html/css/line.css">';
 }
 add_action('xline_head', 'add_diy_css');
 
