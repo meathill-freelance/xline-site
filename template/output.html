@@ -43,6 +43,10 @@
         <th>联系电话</th>
         <td>{{_billing_phone}}</td>
       </tr>
+      <tr>
+        <th>邮件地址</th>
+        <td>{{_billing_email}}</td>
+      </tr>
       {{/ship}}
       </tbody>
     </table>
@@ -57,7 +61,7 @@
       {{#parts}}
       <tbody class="template">
       <tr>
-        <td colspan="3">所选模板：<strong>{{product_name}}</strong></td>
+        <td colspan="3"><h3>{{product_name}} &times; <strong class="text-danger">{{quantity}}</strong></h3></td>
       </tr>
       </tbody>
       <tbody>
@@ -70,29 +74,23 @@
       {{/steps}}
       </tbody>
       {{/parts}}
-    </table>
-    {{/designs}}
-  </div>
-  <div class="panel panel-primary">
-    <div class="panel-heading"><h2>队伍信息</h2></div>
-    <table class="table table-bordered">
-      <thead>
+      <tbody>
+      <tr><td colspan="3"><h3>队伍信息</h3></td></tr>
       <tr>
-        <th>队名</th>
         <th>号码</th>
         <th>姓名</th>
         <th>尺码</th>
       </tr>
-      </thead>
-      <tbody>
+      {{#members}}
       <tr>
-        <td>{{teamname}}</td>
         <td>{{number}}</td>
         <td>{{playername}}</td>
         <td>{{size}}</td>
       </tr>
+      {{/members}}
       </tbody>
     </table>
+    {{/designs}}
   </div>
 </div>
 

@@ -53,7 +53,7 @@ add_action('init', 'create_post_type');
 function add_output_button_to_order_page($actions, $the_order = null) {
   global $post;
   $actions['view'] = array(
-    'url' 		=> get_theme_root_uri() . '/api/output.php?post=' . $post->ID,
+    'url' 		=> get_theme_root_uri() . '/xline/api/output.php?id=' . $post->ID,
     'name' 		=> '导出',
     'action' 	=> "output",
   );
@@ -80,3 +80,20 @@ function configure_smtp(PHPMailer $phpmailer) {
   $phpmailer->FromName = 'XLINE客服';
 }
 add_action('phpmailer_init', 'configure_smtp');
+
+function map_team_order($order_id, $post) {
+  $pdo = require dirname(__FILE__) . "/../inc/pdo.php";
+  $me = get_current_user_id();
+  // 将购物车里的货品更新进去
+  foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+    $quantity = $cart_item['quantity'];
+    $sql = "UPDATE `t_cart_item_map`
+            SET `order_id`=$order_id, `status`=2
+            WHERE `cart_item_key`='$cart_item_key' AND `user_id`=$me
+              AND `status`=0 AND `order_id`=0
+            LIMIT $quantity";
+    $check = $pdo->query($sql);
+  }
+
+}
+add_action('woocommerce_checkout_order_processed', 'map_team_order', 10, 2);

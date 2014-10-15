@@ -55,12 +55,34 @@ $items = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN);
 $items_sql = implode(',', $items);
 
 // 取对应的设计
-$sql = "SELECT `meta_value`
+$sql = "SELECT `order_item_id`, `meta_key`, `meta_value`
 				FROM `wp_woocommerce_order_itemmeta`
-				WHERE `order_item_id` IN ($items_sql) AND `meta_key`='pa_size'";
-$designs = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+				WHERE `order_item_id` IN ($items_sql) AND `meta_key` IN ('_qty', 'pa_size', '_product_id')";
+$item_meta = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+$order_items = array();
+$designs = array();
+foreach ($item_meta as $meta) {
+  if (array_key_exists($meta['order_item_id'], $order_items)) {
+    $order_item = $order_items[$meta['order_item_id']];
+    $order_item[$meta['meta_key']] = $meta['meta_value'];
+  } else {
+    $order_item = array(
+      $meta['meta_key'] => $meta['meta_value'],
+    );
+  }
+  if ($meta['meta_key'] == 'pa_size') {
+    $designs[] = $meta['meta_value'];
+  }
+  $order_items[$meta['order_item_id']] = $order_item;
+}
 $designs = array_unique($designs);
 $design_sql = implode(',', $designs);
+
+// 取生产数量
+$quantity = array();
+foreach ($order_items as $order_item) {
+  $quantity[$order_item['_product_id']] = $order_item['_qty'];
+}
 
 // 取设计的图片
 $sql = "SELECT `id`,`thumbnail`
@@ -68,7 +90,34 @@ $sql = "SELECT `id`,`thumbnail`
         WHERE `id` IN ($design_sql)";
 $thumbnails = $pdo->query($sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
 
-// 取该设计应有的队伍信息
+// 取球队信息
+$sql = "SELECT `design_id`, `playername`, `number`, `size`
+        FROM `t_cart_item_map`
+        WHERE `order_id`=$order_id AND `status`=2";
+$players = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+$members = array();
+foreach ($players as $player) {
+  if (array_key_exists($player['design_id'], $members)) {
+    $group = $members[$player['design_id']];
+  } else {
+    $group = array();
+  }
+  $is_same = false;
+  foreach ($group as $member) {
+    if ($player['playername'] == $member['playername'] && $player['number'] == $member['number']
+      && $player['size'] == $member['size']) {
+      $is_same = true;
+      break;
+    }
+  }
+  if (!$is_same) {
+    $group[] = $player;
+  }
+  $members[$player['design_id']] = $group;
+}
+
+
+// 取该设计信息
 $sql = "SELECT `id`,`data1`,`data2`
 				FROM `t_diy_detail`
 				WHERE `id` IN ($design_sql)";
@@ -79,6 +128,7 @@ $designs = array();
 foreach ($design_details as $detail) {
   $design = array(
     'thumbnail' => $thumbnails[$detail['id']],
+    'members' => $members[$detail['id']],
     'parts' => array(),
   );
   for ($i = 1; $i < 3; $i++) {
@@ -98,6 +148,7 @@ $product_names = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN | PDO::FETCH_UNIQ
 foreach ($designs as $key => $design) {
   foreach ($design['parts'] as &$detail) {
     $detail['product_name'] = $product_names[$detail['tid']];
+    $detail['quantity'] = $quantity[$detail['tid']];
     foreach ($detail['steps'] as &$step) {
       switch ($step['type']) {
         case 'color':
