@@ -24,27 +24,54 @@
       </thead>
       <tbody>
       <tr>
-        <th>用户</th><td>meathill</td>
+        <th>用户</th><td>{{nickname}}</td>
       </tr>
+      {{#ship}}
+      <tr>
+        <th>收件人姓名</th>
+        <td>{{_shipping_last_name}}{{_shipping_first_name}}</td>
+      </tr>
+      <tr>
+        <th>发货地址</th>
+        <td>{{_shipping_city}} {{_shipping_address_2}} {{_shipping_address_1}}</td>
+      </tr>
+      <tr>
+        <th>邮编</th>
+        <td>{{_shipping_postcode}}</td>
+      </tr>
+      <tr>
+        <th>联系电话</th>
+        <td>{{_billing_phone}}</td>
+      </tr>
+      {{/ship}}
       </tbody>
     </table>
   </div>
   <div class="panel panel-primary">
     <div class="panel-heading"><h2>设计内容</h2></div>
+    {{#designs}}
+    <div class="panel-body">
+      <img class="img-thumbnail" src="{{thumbnail}}" >
+    </div>
     <table class="table table-bordered">
-      <thead>
+      {{#parts}}
+      <tbody class="template">
       <tr>
-        <th>部分</th>
-        <th>设计</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td>{{part}}</td>
-        <td>{{content}}</td>
+        <td colspan="3">所选模板：<strong>{{product_name}}</strong></td>
       </tr>
       </tbody>
+      <tbody>
+      {{#steps}}
+      <tr>
+        <td>{{title}}</td>
+        <td>{{type}}</td>
+        <td>{{{content}}}</td>
+      </tr>
+      {{/steps}}
+      </tbody>
+      {{/parts}}
     </table>
+    {{/designs}}
   </div>
   <div class="panel panel-primary">
     <div class="panel-heading"><h2>队伍信息</h2></div>
