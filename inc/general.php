@@ -14,7 +14,7 @@ require_once dirname(__FILE__) . "/Spokesman.class.php";
  */
 function is_login() {
   $result = array(
-    'is_login' => true || is_user_logged_in(),
+    'is_login' => is_user_logged_in(),
     'code' => 0,
   );
   Spokesman::say($result);
