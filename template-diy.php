@@ -10,7 +10,8 @@
  * @since 
  */
 
-$id = (int)array_pop(explode('/', $_SERVER['REQUEST_URI']));
+$path = explode('/', $_SERVER['REQUEST_URI']);
+$id = (int)array_pop($path);
 
 // 将定制界面的js加入
 function add_diy_js() {
@@ -24,7 +25,7 @@ function add_diy_js() {
 add_action('xline_footer', 'add_diy_js');
 
 function add_diy_css() {
-  echo '<link rel="stylesheet" href="/wp-content/themes/xline/css/line.css">';
+  echo '<link rel="stylesheet" href="/wp-content/themes/xline/pure-html/css/line.css">';
 }
 add_action('xline_head', 'add_diy_css');
 
