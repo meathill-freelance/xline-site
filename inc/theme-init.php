@@ -74,7 +74,7 @@ function configure_smtp(PHPMailer $phpmailer) {
   $phpmailer->SMTPAuth = true;
   $phpmailer->Port = 465;
   $phpmailer->Username = 'service@xline.com.cn';
-  $phpmailer->Password = 'xline@2014';
+  $phpmailer->Password = 'cybx227122';
   $phpmailer->SMTPSecure = 'ssl';
   $phpmailer->From = 'service@xline.com.cn';
   $phpmailer->FromName = 'XLINE客服';
