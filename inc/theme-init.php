@@ -68,7 +68,7 @@ add_filter('woocommerce_admin_order_actions', 'add_output_button_to_order_page')
  * @see http://yml.com/fv-b-1-619/selinux--apache-httpd--php-establishing-socket-connections-using-fsockopen---et-al.html
  * @param PHPMailer $phpmailer
  */
-function configure_smtp(PHPMailer $phpmailer) {
+/*function configure_smtp(PHPMailer $phpmailer) {
   $phpmailer->isSMTP();
   $phpmailer->Host = 'smtp.exmail.qq.com';
   $phpmailer->SMTPAuth = true;
@@ -79,7 +79,7 @@ function configure_smtp(PHPMailer $phpmailer) {
   $phpmailer->From = 'service@xline.com.cn';
   $phpmailer->FromName = 'XLINE客服';
 }
-add_action('phpmailer_init', 'configure_smtp');
+add_action('phpmailer_init', 'configure_smtp');*/
 
 function map_team_order($order_id, $post) {
   $pdo = require dirname(__FILE__) . "/../inc/pdo.php";
@@ -97,3 +97,52 @@ function map_team_order($order_id, $post) {
 
 }
 add_action('woocommerce_checkout_order_processed', 'map_team_order', 10, 2);
+
+// Add Password, Repeat Password and Are You Human fields to WordPress registration form
+// http://wp.me/p1Ehkq-gn
+add_action('register_form', 'xline_show_extra_register_fields');
+function xline_show_extra_register_fields(){
+  ?>
+  <p>
+    <label for="password">密码<br/>
+      <input id="password" class="input" type="password" tabindex="30" size="25" name="password"
+             placeholder="长度8~20个字符" />
+    </label>
+  </p>
+  <p>
+    <label for="repeat_password">重复密码<br/>
+      <input id="repeat_password" class="input" type="password" tabindex="40" size="25" name="repeat_password" />
+    </label>
+  </p>
+<?php
+}
+
+// Check the form for errors
+add_action('register_post', 'xline_check_extra_register_fields', 10, 3);
+function xline_check_extra_register_fields($login, $email, $errors) {
+  if ($_POST['password'] !== $_POST['repeat_password']) {
+    $errors->add('passwords_not_matched', "<strong>错误</strong>: 两次输入的密码不同");
+  }
+  if (strlen($_POST['password'] ) < 8) {
+    $errors->add('password_too_short', "<strong>错误</strong>: 密码不能少于8个字符");
+  }
+}
+
+add_action( 'user_register', 'xline_register_extra_fields', 100 );
+function xline_register_extra_fields( $user_id ){
+  $userdata = array();
+
+  $userdata['ID'] = $user_id;
+  if ( $_POST['password'] !== '' ) {
+    $userdata['user_pass'] = $_POST['password'];
+  }
+  $new_user_id = wp_update_user( $userdata );
+}
+
+add_filter( 'gettext', 'xline_edit_password_email_text' );
+function xline_edit_password_email_text ( $text ) {
+  if ( $text == 'A password will be e-mailed to you.' ) {
+    $text = '如果您此时不设密码，我们会将含有随机密码的邮件发至您的邮箱。';
+  }
+  return $text;
+}
