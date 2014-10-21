@@ -98,8 +98,30 @@ function map_team_order($order_id, $post) {
 }
 add_action('woocommerce_checkout_order_processed', 'map_team_order', 10, 2);
 
-// Add Password, Repeat Password and Are You Human fields to WordPress registration form
-// http://wp.me/p1Ehkq-gn
+
+/**************************************
+ * 处理注册登录
+ *************************************/
+// 去掉用户名注册
+
+add_action('login_head', 'xline_remove_username');
+function xline_remove_username() {
+  ?>
+  <style>
+    #registerform > p:first-child{
+      display:none;
+    }
+  </style>
+
+  <script>
+    $(function(){
+      $('#registerform > p:first-child').remove();
+    });
+  </script>
+<?php
+}
+
+// 增加自定义密码的部分
 add_action('register_form', 'xline_show_extra_register_fields');
 function xline_show_extra_register_fields(){
   ?>
@@ -117,7 +139,7 @@ function xline_show_extra_register_fields(){
 <?php
 }
 
-// Check the form for errors
+// 校验用户的输入
 add_action('register_post', 'xline_check_extra_register_fields', 10, 3);
 function xline_check_extra_register_fields($login, $email, $errors) {
   if ($_POST['password'] !== $_POST['repeat_password']) {
@@ -128,6 +150,29 @@ function xline_check_extra_register_fields($login, $email, $errors) {
   }
 }
 
+// 移除关于用户名的提示，保留其它提示
+add_filter('registration_errors', 'xline_remove_username_error', 10, 3);
+function xline_remove_username_error($wp_error, $sanitized_user_login, $user_email) {
+  if(isset($wp_error->errors['empty_username'])){
+    unset($wp_error->errors['empty_username']);
+  }
+
+  if(isset($wp_error->errors['username_exists'])){
+    unset($wp_error->errors['username_exists']);
+  }
+  return $wp_error;
+}
+
+// 将用户输入的邮箱作为其用户名
+add_action('login_form_register', 'xline_use_email_as_username');
+function xline_use_email_as_username(){
+  if (empty($_POST['user_login']) && isset($_POST['user_email'])
+    && !empty($_POST['user_email'])){
+    $_POST['user_login'] = $_POST['user_email'];
+  }
+}
+
+// 把用户刚才输入的密码记录下来
 add_action( 'user_register', 'xline_register_extra_fields', 100 );
 function xline_register_extra_fields( $user_id ){
   $userdata = array();
@@ -145,4 +190,12 @@ function xline_edit_password_email_text ( $text ) {
     $text = '如果您此时不设密码，我们会将含有随机密码的邮件发至您的邮箱。';
   }
   return $text;
+}
+
+// 去掉普通用户的admin bar
+add_action('after_setup_theme', 'remove_admin_bar');
+function remove_admin_bar() {
+  if (!current_user_can('administrator') && !is_admin()) {
+    show_admin_bar(false);
+  }
 }
