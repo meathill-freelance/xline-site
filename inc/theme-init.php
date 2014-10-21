@@ -127,13 +127,14 @@ function xline_show_extra_register_fields(){
   ?>
   <p>
     <label for="password">密码<br/>
-      <input id="password" class="input" type="password" tabindex="30" size="25" name="password"
+      <input id="password" class="input" type="password" size="20" name="password"
              placeholder="长度8~20个字符" />
     </label>
   </p>
   <p>
     <label for="repeat_password">重复密码<br/>
-      <input id="repeat_password" class="input" type="password" tabindex="40" size="25" name="repeat_password" />
+      <input id="repeat_password" class="input" type="password" size="20" name="repeat_password"
+        placeholder="请再输入一遍。"/>
     </label>
   </p>
 <?php
@@ -182,14 +183,6 @@ function xline_register_extra_fields( $user_id ){
     $userdata['user_pass'] = $_POST['password'];
   }
   $new_user_id = wp_update_user( $userdata );
-}
-
-add_filter( 'gettext', 'xline_edit_password_email_text' );
-function xline_edit_password_email_text ( $text ) {
-  if ( $text == 'A password will be e-mailed to you.' ) {
-    $text = '如果您此时不设密码，我们会将含有随机密码的邮件发至您的邮箱。';
-  }
-  return $text;
 }
 
 // 去掉普通用户的admin bar
