@@ -12,6 +12,15 @@ $cloth_color = array("252525", "ABAEB5", "1F6742", "FCFCFC", "27458B", "AA2327",
 $cloth_color_name = array("黑色", "灰色", "松绿", "白色", "皇家蓝", "大学红", "郁金色", "淡粉", "橘红", "校园蓝");
 $char_color = array("252525", "B53536", "FFB51E", "22314E", "A1A6AC", "195C3B", "1323B7", "C9532B", "493477", "958049", "FE467C", "016769", "3AA2FB", "FFFFFF");
 $char_color_name = array("黑色", "大学红", "郁金色", "宝蓝色", "灰色", "松绿", "皇家蓝", "橘色", "宫廷紫", "金属黄", "荧光粉", "青色", "校园蓝", "白色");
+$size_name = array(
+  1 => '大/L',
+  2 => '加大/XL',
+  3 => '特大/XL',
+  4 => '超大/XXXL',
+  10 => '中/M',
+  21 => '小/S',
+  22 => '加小/XS',
+);
 // 取上衣的id
 $sql = "SELECT `object_id`,`term_taxonomy_id`
         FROM `wp_term_relationships`
@@ -103,6 +112,7 @@ foreach ($players as $player) {
     $group = array();
   }
   $is_same = false;
+  $player['size'] = $size_name[$player['size']];
   foreach ($group as $member) {
     if ($player['playername'] == $member['playername'] && $player['number'] == $member['number']
       && $player['size'] == $member['size']) {
