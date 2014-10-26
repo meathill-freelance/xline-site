@@ -55,7 +55,10 @@
     <div class="panel-heading"><h2>设计内容</h2></div>
     {{#designs}}
     <div class="panel-body">
-      <img class="img-thumbnail" src="{{thumbnail}}" >
+      <div class="flash-placeholder" data-id="{{id}}" id="flash-{{id}}">
+        <h1>DIY展示</h1>
+        <p><a href="http://www.adobe.com/go/getflashplayer">您需要下载最新的Flash播放器才能使用定制服务。</a></p>
+      </div>
     </div>
     <table class="table table-bordered">
       {{#parts}}
@@ -96,6 +99,32 @@
 
 
 <script src="//cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="//cdn.staticfile.org/swfobject/2.2/swfobject.js"></script>
 <script src="//cdn.staticfile.org/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script>
+  $(function () {
+    $('.flash-placeholder').each(function (i) {
+      var id = $(this).data('id')
+        , url = '/wp-content/themes/xline/api/?id=' + id
+        , flashvars = {
+          cloth: [url, url].join(',')
+        }
+        , params = {
+          menu: "false",
+          scale: "noScale",
+          bgcolor: "FFFFFF",
+          wmode: "direct" // can cause issues with FP settings & webcam
+        }
+        , attributes = {
+          id: "DIY"
+        };
+      swfobject.embedSWF(
+        "/wp-content/themes/xline/swf/viewer.swf",
+        'flash-' + id, "100%", "960", "11.0.0",
+        "../swf/expressInstall.swf",
+        flashvars, params, attributes);
+    });
+  });
+</script>
 </body>
 </html>

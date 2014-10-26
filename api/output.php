@@ -137,6 +137,7 @@ $tid = array();
 $designs = array();
 foreach ($design_details as $detail) {
   $design = array(
+    'id' => $detail['id'],
     'thumbnail' => $thumbnails[$detail['id']],
     'members' => $members[$detail['id']],
     'parts' => array(),

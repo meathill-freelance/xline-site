@@ -37,6 +37,9 @@ $sql = "SELECT *
         ORDER BY `id` DESC
         LIMIT $start, $pagesize";
 $list = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+foreach ($list as $key => $value) {
+  $list[$key]['name'] = !$value['name'] || $value['name'] == '未命名设计' ? 'XLINE球队' : $value['name'];
+}
 
 // 设置body class
 function add_design_body_class($classes) {
