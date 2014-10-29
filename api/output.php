@@ -151,7 +151,7 @@ foreach ($design_details as $detail) {
 }
 
 // 取衣服版式
-$tid_sql = implode(',', $tid);
+$tid_sql = implode(',', array_filter($tid));
 $sql = "SELECT `ID`, `post_title`
         FROM `wp_posts`
         WHERE `ID` IN ($tid_sql)";
@@ -160,6 +160,9 @@ foreach ($designs as $key => $design) {
   foreach ($design['parts'] as &$detail) {
     $detail['product_name'] = $product_names[$detail['tid']];
     $detail['quantity'] = $quantity[$detail['tid']];
+    if (!is_array($detail['steps'])) {
+      continue;
+    }
     foreach ($detail['steps'] as &$step) {
       switch ($step['type']) {
         case 'color':
