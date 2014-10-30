@@ -59,6 +59,9 @@
         <h1>DIY展示</h1>
         <p><a href="http://www.adobe.com/go/getflashplayer">您需要下载最新的Flash播放器才能使用定制服务。</a></p>
       </div>
+      <p class="alert alert-info" id="placeholder-{{id}}">
+        <i class="fa fa-spin fa-spinner"></i> 加载设计图中，请稍后
+      </p>
     </div>
     <table class="table table-bordered">
       {{#parts}}
@@ -107,6 +110,7 @@
       var id = $(this).data('id')
         , url = '/wp-content/themes/xline/api/?id=' + id
         , flashvars = {
+          id: id,
           cloth: [url, url].join(',')
         }
         , params = {
@@ -116,15 +120,23 @@
           wmode: "direct" // can cause issues with FP settings & webcam
         }
         , attributes = {
-          id: "DIY"
+          id: "diy-" + id
         };
       swfobject.embedSWF(
         "/wp-content/themes/xline/swf/viewer.swf",
-        'flash-' + id, "100%", "960", "11.0.0",
+        'flash-' + id, "100%", "10", "14.0.0",
         "../swf/expressInstall.swf",
         flashvars, params, attributes);
     });
   });
+  function createPic(id, base64) {
+    console.log('create pic');
+    var img = document.createElement('img');
+    img.className = 'img-thumbnail';
+    img.src = 'data:image/jpeg;base64,' + base64;
+    $('#diy-' + id).remove();
+    $('#placeholder-' + id).replaceWith(img);
+  }
 </script>
 </body>
 </html>
