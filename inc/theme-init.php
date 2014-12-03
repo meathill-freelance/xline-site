@@ -61,26 +61,6 @@ function add_output_button_to_order_page($actions, $the_order = null) {
 }
 add_filter('woocommerce_admin_order_actions', 'add_output_button_to_order_page');
 
-/**
- * 要求Wordpress使用SMTP发送邮件
- * 从php角度来说这样就够了，不过有些SElinux里默认禁止php使用fsockopen连接外网
- * 所以需要运行 `setsebool -P httpd_can_network_connect 1` 解禁
- * @see http://yml.com/fv-b-1-619/selinux--apache-httpd--php-establishing-socket-connections-using-fsockopen---et-al.html
- * @param PHPMailer $phpmailer
- */
-/*function configure_smtp(PHPMailer $phpmailer) {
-  $phpmailer->isSMTP();
-  $phpmailer->Host = 'smtp.exmail.qq.com';
-  $phpmailer->SMTPAuth = true;
-  $phpmailer->Port = 465;
-  $phpmailer->Username = 'service@xline.com.cn';
-  $phpmailer->Password = 'cybx227122';
-  $phpmailer->SMTPSecure = 'ssl';
-  $phpmailer->From = 'service@xline.com.cn';
-  $phpmailer->FromName = 'XLINE客服';
-}
-add_action('phpmailer_init', 'configure_smtp');*/
-
 function map_team_order($order_id, $post) {
   $pdo = require dirname(__FILE__) . "/../inc/pdo.php";
   $me = get_current_user_id();
