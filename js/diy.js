@@ -20,6 +20,11 @@ $('.style-list')
     event.stopPropagation();
     event.preventDefault();
   })
+  .on('click', '.btn-info', function () {
+    var target = $(this);
+    target.closest('.row').find('.btn.active').removeClass('active');
+    target.addClass('active');
+  })
   .on('submit', function (event) {
     var cloth = [];
     $('.tab-pane.active input:checked').each(function () {
