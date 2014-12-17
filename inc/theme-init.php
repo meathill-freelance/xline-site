@@ -57,9 +57,17 @@ function add_output_button_to_order_page($actions, $the_order = null) {
     'name' 		=> '导出',
     'action' 	=> "output",
   );
+  $coupons = $the_order->get_used_coupons();
+  if ($coupons) {
+    $actions['coupons'] = array(
+      'url' => '#',
+      'name' => '优惠码：' . implode('，', $coupons),
+      'action' => 'output',
+    );
+  }
   return $actions;
 }
-add_filter('woocommerce_admin_order_actions', 'add_output_button_to_order_page');
+add_filter('woocommerce_admin_order_actions', 'add_output_button_to_order_page', 10, 2);
 
 function map_team_order($order_id, $post) {
   $pdo = require dirname(__FILE__) . "/../inc/pdo.php";
