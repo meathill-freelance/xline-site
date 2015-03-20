@@ -8,6 +8,8 @@
  * @since 
  */
 
+require 'config/config.php';
+
 $includes = array(
   'inc/general.php',
   'inc/theme-init.php',
