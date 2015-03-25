@@ -48,3 +48,102 @@ function ajax_login(){
 }
 add_action('wp_ajax_nopriv_ajax_login', "ajax_login");
 add_action('wp_ajax_ajax_login', "ajax_login");
+
+function ajax_register() {
+  if ( $_POST['action'] != 'register_action' ) {
+    $result = array(
+      'code' => 10,
+      'msg' => '参数无效',
+    );
+    exit(json_encode($result));
+  }
+
+  if (!check_ajax_referer('ajax-register-nonce', 'security', false)) {
+    $result = array(
+      'code' => 11,
+      'msg' => '验证码错误',
+    );
+    exit(json_encode($result));
+  }
+
+  $email = trim( $_POST['email'] );
+  $password = $_POST['password'];
+  $repeat = $_REQUEST['repeat_password'];
+
+  if ($password != $repeat) {
+    $result = array(
+      'code' => 20,
+      'msg' => '两次输入的密码不一致，请重新输入',
+    );
+    exit(json_encode($result));
+  }
+
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $result = array(
+      'code' => 21,
+      'msg' => '您输入的邮箱格式不正确，请重新输入',
+    );
+    exit(json_encode($result));
+  }
+
+  $status = wp_create_user( $email, $password ,$email );
+
+  if ( is_wp_error($status) ){
+    $result = array(
+      'code' => 1,
+      'msg' => '注册失败',
+      'error' => $status->errors,
+    );
+    exit(json_encode($result));
+  }
+
+  // 帮用户登录
+  $info = array(
+    'user_login' => $email,
+    'user_password' => $password,
+    'remember' => 'forever',
+  );
+  $status = wp_signon($info);
+
+  if (is_wp_error($status)) {
+    $result = array(
+      'code' => 2,
+      'msg' => '登录失败',
+      'error' => $status->errors,
+    );
+    exit(json_encode($result));
+  }
+
+  $result = array(
+    'code' => 0,
+    'msg' => '注册成功',
+  );
+  echo json_encode($result);
+}
+add_action('wp_ajax_register_action', 'ajax_register');
+add_action('wp_ajax_nopriv_register_action', 'ajax_register');
+
+/**
+ * 要求Wordpress使用SMTP发送邮件
+ * 从php角度来说这样就够了，不过有些SElinux里默认禁止php使用fsockopen连接外网
+ * 所以需要运行 `setsebool -P httpd_can_network_connect 1` 解禁
+ * @see http://yml.com/fv-b-1-619/selinux--apache-httpd--php-establishing-socket-connections-using-fsockopen---et-al.html
+ * @param PHPMailer $phpmailer
+ *
+ * @param PHPMailer $phpmailer
+ */
+function configure_smtp(PHPMailer $phpmailer) {
+  $phpmailer->isSMTP();
+  $phpmailer->CharSet = 'UTF-8';
+  $phpmailer->Host = 'smtp.exmail.qq.com';
+  $phpmailer->SMTPAuth = true;
+  $phpmailer->Username = 'service@xline.com.cn';
+  $phpmailer->Password = MAIL_PASSWORD;
+  $phpmailer->SMTPSecure = 'ssl';
+  $phpmailer->Port = 465;
+  $phpmailer->isHTML(true);
+
+  $phpmailer->From = 'service@xline.com.cn';
+  $phpmailer->FromName = 'XLINE客服';
+}
+add_action('phpmailer_init', 'configure_smtp');

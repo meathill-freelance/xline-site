@@ -47,8 +47,11 @@ add_action('init', 'create_post_type');
 
 /**
  * 在订单页上显示导出按钮
- * @param $actions 按钮列表
- * @param $the_order 排序
+ *
+ * @param array $actions 按钮列表
+ * @param Order $the_order 排序
+ *
+ * @return array 按钮列表
  */
 function add_output_button_to_order_page($actions, $the_order = null) {
   global $post;

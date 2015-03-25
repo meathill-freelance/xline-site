@@ -8,6 +8,8 @@
  * @since 
  */
 
+require 'config/config.php';
+
 $includes = array(
   'inc/general.php',
   'inc/theme-init.php',
@@ -18,7 +20,11 @@ foreach ($includes as $item) {
 }
 
 // 下面是一些不好归类的函数
-add_theme_support( 'woocommerce' );
+function woocommerce_support() {
+  add_theme_support('woocommerce');
+}
+add_action('after_setup_theme', 'woocommerce_support');
+
 
 function init_page($page, $pagesize, $total) {
   $prev = $page - 1 > 0 ? $page - 1 : 0;
