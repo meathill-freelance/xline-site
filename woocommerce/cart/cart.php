@@ -1,20 +1,24 @@
 <?php
 /**
  * Cart Page
+ * 界面变化较大，基本相当于重写
  *
  * @author 		WooThemes
  * @package 	WooCommerce/Templates
- * @version     2.1.0
+ * @version     2.3.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-
-global $woocommerce;
+if ( ! defined( 'ABSPATH' ) ) {
+  exit; // Exit if accessed directly
+}
 
 wc_print_notices();
 
 do_action( 'woocommerce_before_cart' );
+
+ob_start();
 do_action( 'woocommerce_before_cart_table' );
+$before_cart_table = ob_get_clean();
 
 $size = array(
   '大/L',
@@ -28,7 +32,8 @@ $size = array(
 $result = array(
   'cart_url' => esc_url(WC()->cart->get_cart_url()),
   'has_coupon' => WC()->cart->coupons_enabled(),
-  'wpnonce' => wp_create_nonce('woocommerce-cart')
+  'wpnonce' => wp_create_nonce('woocommerce-cart'),
+  'before_cart_table' => $before_cart_table,
 );
 $designs = array();
 $pdo = require dirname(__FILE__) . "/../../inc/pdo.php";
@@ -107,8 +112,6 @@ do_action( 'woocommerce_after_cart_table' ); ?>
 	<?php do_action( 'woocommerce_cart_collaterals' ); ?>
 
 	<?php woocommerce_cart_totals(); ?>
-
-	<?php woocommerce_shipping_calculator(); ?>
 
 </div>
 

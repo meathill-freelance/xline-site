@@ -28,8 +28,8 @@
         context: this,
         data: {
           'action': 'ajax_login',
-          'log': $('#username').val(),
-          'pwd': $('#password').val(),
+          'log': $('[name=log]').val(),
+          'pwd': $('[name=pwd]').val(),
           'security': $('#security').val(),
           'rememberme': $('#remember-me').prop('checked') ? 'forever' : ''
         },

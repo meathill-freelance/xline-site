@@ -1,4 +1,5 @@
 <form action="{{cart_url}}" method="post" id="cart-list">
+  {{{before_cart_table}}}
   <input type="hidden" name="_wpnonce" id="_wpnonce" value="{{wpnonce}}">
   {{#designs}}
   <div class="row design" id="design-{{id}}" data-keys="{{cart_items}}">
