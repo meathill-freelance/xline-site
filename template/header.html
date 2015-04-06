@@ -69,7 +69,7 @@
         <li class="{{#is_diy}}active{{/is_diy}}"><a href="/diy">定制球衣</a>
         </li>
       </ul>
-      <ul class="nav navbar-nav navbar-right me">
+      <ul class="nav navbar-nav navbar-right" id="me">
         {{^is_login}}
         <li class="login">
           <a href="#login-modal" data-toggle="modal">登录/注册</a>
@@ -100,12 +100,13 @@
         <h4 class="modal-title">登录XLINE.COM</h4>
       </div>
       <div class="modal-body">
-        <form id="login-form" action="/wp-admin/admin-ajax.php" method="post" class="form-horizontal" role="form">
+        <form id="login-form" action="/wp-admin/admin-ajax.php" method="post" class="form-horizontal ajax" role="form">
           {{{login_nonce}}}
           <input type="hidden" name="redirect_to" value="/">
-          <div class="alert" style="display: none"></div>
+          <input type="hidden" name="action" value="ajax_login">
+          <div class="alert alert-msg" style="display: none"></div>
           <div class="form-group">
-            <label for="login-username" class="col-sm-3 control-label">用户名</label>
+            <label for="login-username" class="col-sm-3 control-label">您的邮箱</label>
             <div class="col-sm-9">
               <input id="login-username" type="text" name="log" class="form-control" placeholder="您的邮箱，如you@xline.com.cn" tabindex="1">
             </div>
@@ -126,7 +127,7 @@
       <div class="modal-footer">
         <button class="btn btn-primary" tabindex="4" form="login-form"><i class="fa fa-check"></i> 登录</button>
         <a class="btn btn-info" href="{{lost_pwd_url}}" tabindex="5">忘记密码？</a>
-        <a href="/wp-login.php?action=register" class="btn btn-success" tabindex="6" target="_blank"><i class="fa fa-edit"></i> 注册</a>
+        <button type="button" class="btn btn-success" tabindex="6" data-toggle="modal" data-target="#register-modal" data-dismiss="modal"><i class="fa fa-edit"></i> 注册</button>
       </div>
       <iframe class="cover" scrolling="no" frameborder="0"></iframe>
     </div><!-- /.modal-content -->
@@ -143,33 +144,34 @@
         <h4 class="modal-title">注册XLINE.COM会员</h4>
       </div>
       <div class="modal-body">
-        <form id="register-form" action="/wp-admin/admin-ajax.php" method="post" class="form-horizontal" role="form">
+        <form id="register-form" action="/wp-admin/admin-ajax.php" method="post" class="form-horizontal ajax" role="form">
           {{{login_nonce}}}
           <input type="hidden" name="redirect_to" value="/">
-          <div class="alert" style="display: none"></div>
+          <input type="hidden" name="action" value="ajax_register">
+          <div class="alert alert-msg" style="display: none"></div>
           <div class="form-group">
-            <label for="reg-username" class="col-sm-3 control-label">用户名</label>
+            <label for="reg-username" class="col-sm-3 control-label">您的邮箱</label>
             <div class="col-sm-9">
-              <input id="reg-username" type="text" name="log" class="form-control" placeholder="您的邮箱，如you@xline.com.cn" tabindex="1">
+              <input id="reg-username" type="text" name="email" class="form-control" placeholder="您的邮箱，如you@xline.com.cn" tabindex="1">
             </div>
           </div>
           <div class="form-group">
             <label for="reg-password" class="col-sm-3 control-label">密码</label>
             <div class="col-sm-9">
-              <input id="reg-password" type="password" name="pwd" class="form-control" tabindex="2" placeholder="长度8~20个字符">
+              <input id="reg-password" type="password" name="password" class="form-control" tabindex="2" placeholder="长度8~20个字符">
             </div>
           </div>
           <div class="form-group">
             <label for="repeat-password" class="col-sm-3 control-label">重复密码</label>
             <div class="col-sm-9">
-              <input id="repeat-password" type="password" name="re-pwd" class="form-control" tabindex="3" placeholder="与前面一致，避免输错。">
+              <input id="repeat-password" type="password" name="repeat_password" class="form-control" tabindex="3" placeholder="与前面一致，避免输错。">
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary" tabindex="4" form="register-form"><i class="fa fa-check"></i> 注册</button>
-        <a href="/wp-login.php?action=register" class="btn btn-success" tabindex="6" target="_blank"><i class="fa fa-edit"></i> 登录</a>
+        <button type="button" class="btn btn-success" tabindex="6" data-toggle="modal" data-target="#login-modal" data-dismiss="modal"><i class="fa fa-edit"></i> 登录</button>
       </div>
       <iframe class="cover" scrolling="no" frameborder="0"></iframe>
     </div><!-- /.modal-content -->

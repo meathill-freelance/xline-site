@@ -50,19 +50,22 @@ add_action('wp_ajax_nopriv_ajax_login', "ajax_login");
 add_action('wp_ajax_ajax_login', "ajax_login");
 
 function ajax_register() {
-  if ( $_POST['action'] != 'register_action' ) {
+  header('Content-Type: application/json; charset=UTF-8');
+  if ( $_POST['action'] != 'ajax_register' ) {
     $result = array(
       'code' => 10,
       'msg' => '参数无效',
     );
+    header('HTTP/1.1 400 Bad Request');
     exit(json_encode($result));
   }
 
-  if (!check_ajax_referer('ajax-register-nonce', 'security', false)) {
+  if (!check_ajax_referer('ajax-login-nonce', 'security', false)) {
     $result = array(
       'code' => 11,
       'msg' => '验证码错误',
     );
+    header('HTTP/1.1 403 Forbidden');
     exit(json_encode($result));
   }
 
@@ -75,6 +78,7 @@ function ajax_register() {
       'code' => 20,
       'msg' => '两次输入的密码不一致，请重新输入',
     );
+    header('HTTP/1.1 406 Not Acceptable');
     exit(json_encode($result));
   }
 
@@ -83,17 +87,29 @@ function ajax_register() {
       'code' => 21,
       'msg' => '您输入的邮箱格式不正确，请重新输入',
     );
+    header('HTTP/1.1 406 Not Acceptable');
     exit(json_encode($result));
   }
 
   $status = wp_create_user( $email, $password ,$email );
 
   if ( is_wp_error($status) ){
+    $error = $status->errors;
+    $feedback = array();
+    foreach ( $error as $key => $value ) {
+      if (is_array($value)) {
+        $feedback = array_merge($feedback, $value);
+      } else {
+        $feedback[] = $value;
+      }
+    }
+
     $result = array(
       'code' => 1,
       'msg' => '注册失败',
-      'error' => $status->errors,
+      'error' => implode('<br>', $feedback),
     );
+    header('HTTP/1.1 400 Bad Request');
     exit(json_encode($result));
   }
 
@@ -111,6 +127,7 @@ function ajax_register() {
       'msg' => '登录失败',
       'error' => $status->errors,
     );
+    header('HTTP/1.1 400 Bad Request');
     exit(json_encode($result));
   }
 
@@ -119,9 +136,10 @@ function ajax_register() {
     'msg' => '注册成功',
   );
   echo json_encode($result);
+  exit();
 }
-add_action('wp_ajax_register_action', 'ajax_register');
-add_action('wp_ajax_nopriv_register_action', 'ajax_register');
+add_action('wp_ajax_ajax_register', 'ajax_register');
+add_action('wp_ajax_nopriv_ajax_register', 'ajax_register');
 
 /**
  * 要求Wordpress使用SMTP发送邮件
