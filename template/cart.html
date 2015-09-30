@@ -54,7 +54,9 @@
             <td><a href="#playername" class="edit" data-maxlength="8" title="姓名">{{playername}}</a></td>
             <td><a href="#size" class="edit" data-modal="select" data-options="#size-options" title="尺码">{{size}}</a></td>
             <td>
+              {{^id}}
               <button type="button" class="btn btn-sm btn-primary save-button"><i class="fa fa-check"></i></button>
+              {{/id}}
               <button type="button" class="btn btn-sm btn-danger delete-button"><i class="fa fa-times"></i></button>
             </td>
           </tr>
